@@ -124,6 +124,23 @@
             from { opacity: 0; transform: translateY(-5px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
+
+        /* Çizimler için SVG Sınıfları */
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .tree-box { fill: #fdfdfd; stroke: #333; stroke-width: 1.5px; }
+        .tree-text { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 13px; fill: #000; text-anchor: middle; font-weight: 500; }
+        .tree-line { stroke: #333; stroke-width: 1.5px; fill: none; }
+        .tree-label { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; fill: #000; font-weight: 600; }
+
     </style>
 </head>
 <body>
@@ -439,7 +456,58 @@
 
     <!-- Soru 17 -->
     <div class="question-box" id="q17">
-        <div class="question-text">S17- Yukarıda verilen olay ağacına ve olasılıklara göre sistemde patlama meydana gelme olasılığı aşağıdakilerden hangisidir?<br><em>(Görsel Verisi: Basınç Yükselir(1,00) -> Regülatör Çalışmaz(0,10) -> Sızıntı Olur(0,10) -> Patlama)</em></div>
+        <div class="question-text">S17- Yukarıda verilen olay ağacına ve olasılıklara göre sistemde patlama meydana gelme olasılığı aşağıdakilerden hangisidir?</div>
+        
+        <!-- Olay Ağacı SVG Çizimi -->
+        <div class="svg-container">
+            <svg width="650" height="300" viewBox="0 0 650 300" xmlns="http://www.w3.org/2000/svg">
+                <!-- Kutular ve Metinleri -->
+                <!-- Basınç Yükselir -->
+                <rect x="20" y="110" width="120" height="46" class="tree-box"/>
+                <text x="80" y="130" class="tree-text">Basınç Yükselir</text>
+                <text x="80" y="150" class="tree-text">(1,00)</text>
+
+                <!-- Regülatör Çalışır -->
+                <rect x="210" y="50" width="130" height="46" class="tree-box"/>
+                <text x="275" y="70" class="tree-text">Regülatör Çalışır</text>
+                <text x="275" y="90" class="tree-text">(0,90)</text>
+
+                <!-- Regülatör Çalışmaz -->
+                <rect x="210" y="170" width="130" height="46" class="tree-box"/>
+                <text x="275" y="190" class="tree-text">Regülatör Çalışmaz</text>
+                <text x="275" y="210" class="tree-text">(0,10)</text>
+
+                <!-- Sızıntı Olur -->
+                <rect x="410" y="110" width="110" height="46" class="tree-box"/>
+                <text x="465" y="130" class="tree-text">Sızıntı Olur</text>
+                <text x="465" y="150" class="tree-text">(0,10)</text>
+
+                <!-- Sızıntı Olmaz -->
+                <rect x="410" y="230" width="110" height="46" class="tree-box"/>
+                <text x="465" y="250" class="tree-text">Sızıntı Olmaz</text>
+                <text x="465" y="270" class="tree-text">(0,90)</text>
+
+                <!-- Bağlantı Çizgileri -->
+                <!-- 1. Dallanma -->
+                <polyline points="140,133 180,133 180,73 210,73" class="tree-line"/>
+                <polyline points="180,133 180,193 210,193" class="tree-line"/>
+                
+                <!-- 2. Dallanma -->
+                <polyline points="340,193 380,193 380,133 410,133" class="tree-line"/>
+                <polyline points="380,193 380,253 410,253" class="tree-line"/>
+
+                <!-- Sonuç Çizgileri ve Yazıları -->
+                <line x1="340" y1="73" x2="390" y2="73" class="tree-line"/>
+                <text x="395" y="78" class="tree-label">Güvenlik</text>
+
+                <line x1="520" y1="133" x2="570" y2="133" class="tree-line"/>
+                <text x="575" y="138" class="tree-label">Patlama</text>
+
+                <line x1="520" y1="253" x2="570" y2="253" class="tree-line"/>
+                <text x="575" y="258" class="tree-label">Güvenlik</text>
+            </svg>
+        </div>
+
         <ul class="options">
             <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">A) 0,0001</li>
             <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">B) 0,001</li>
@@ -450,7 +518,7 @@
         <div class="solution" id="sol17">
             <h4>Çözüm ve Konu Anlatımı</h4>
             <p><strong>Doğru Cevap: C) 0,01</strong></p>
-            <p>Olay ağacı analizinde (ETA) belirli bir sonucun meydana gelme olasılığı, o sonuca giden yoldaki (dallardaki) tüm olasılıkların çarpılmasıyla bulunur. Sorudaki görsele göre "Patlama" olabilmesi için:<br>
+            <p>Olay ağacı analizinde (ETA) belirli bir sonucun meydana gelme olasılığı, o sonuca giden yoldaki (dallardaki) tüm olasılıkların çarpılmasıyla bulunur. Görseldeki ağaca göre "Patlama" olabilmesi için takip edilmesi gereken yol sırasıyla şöyledir:<br>
             1. Başlatıcı olay (Basınç Yükselir): 1,00<br>
             2. Regülatör Çalışmaz dalı: 0,10<br>
             3. Sızıntı Olur dalı: 0,10<br>
