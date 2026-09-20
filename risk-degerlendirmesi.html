@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Değerlendirmesi | Çözümlü Sorular</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-bg: #d4edda;
+            --success-border: #c3e6cb;
+            --success-text: #155724;
+            --error-bg: #f8d7da;
+            --error-border: #f5c6cb;
+            --error-text: #721c24;
+            --bg-color: #f4f7f6;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg-color); 
+            color: #333; 
+            line-height: 1.6; 
+            padding: 20px; 
+            margin: 0;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .home-link {
+            text-decoration: none;
+            color: #fff;
+            background-color: var(--secondary-color);
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .home-link:hover { background-color: #2980b9; }
+        .header-titles { text-align: right; }
+        h1 { color: var(--primary-color); margin: 0; font-size: 1.5em; }
+        h1 small { display: block; font-size: 0.65em; color: #7f8c8d; margin-top: 5px; font-weight: normal; }
+        
+        .question-box { 
+            margin-bottom: 40px; 
+            padding: 25px; 
+            border: 1px solid #eaeaea; 
+            border-radius: 10px; 
+            background-color: #fafbfc; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03); 
+        }
+        .question-text { 
+            font-weight: 600; 
+            font-size: 1.1em; 
+            margin-bottom: 20px; 
+        }
+        .options { list-style-type: none; padding: 0; margin: 0; }
+        .option { 
+            margin: 10px 0; 
+            padding: 12px 15px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            background-color: #fff; 
+            font-size: 1.05em; 
+        }
+        .option:hover { background-color: #f1f1f1; border-color: #ccc; }
+        
+        .option.correct { 
+            background-color: var(--success-bg) !important; 
+            border-color: var(--success-border) !important; 
+            color: var(--success-text) !important; 
+            font-weight: bold; 
+        }
+        .option.wrong { 
+            background-color: var(--error-bg) !important; 
+            border-color: var(--error-border) !important; 
+            color: var(--error-text) !important; 
+            text-decoration: line-through; 
+        }
+        .disabled { pointer-events: none; }
+        
+        .solution { 
+            display: none; 
+            margin-top: 20px; 
+            padding: 20px; 
+            background-color: #eaf4fb; 
+            border-left: 6px solid var(--secondary-color); 
+            border-radius: 6px; 
+            animation: fadeIn 0.5s; 
+        }
+        .solution h4 { margin-top: 0; margin-bottom: 12px; color: #2980b9; font-size: 1.15em; }
+        .solution p { margin: 0 0 10px 0; }
+        .solution p:last-child { margin-bottom: 0; }
+        
+        .footer { 
+            text-align: center; 
+            margin-top: 50px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            font-size: 1.1em; 
+            color: #7f8c8d; 
+        }
+        .footer strong { color: var(--primary-color); }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(-5px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-top">
+        <a href="index.html" class="home-link">🏠 Ana Sayfa</a>
+        <div class="header-titles">
+            <h1>RİSK DEĞERLENDİRMESİ<br><small>2025-2026 BAHAR/FİNAL - B</small></h1>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(btn, isCorrect, solutionId, questionId) {
+            const options = document.querySelectorAll('#' + questionId + ' .option');
+            
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                if (opt.dataset.correct === 'true') {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            if (!isCorrect) {
+                btn.classList.add('wrong');
+            }
+            
+            const solDiv = document.getElementById(solutionId);
+            solDiv.style.display = 'block';
+        }
+    </script>
+
+    <!-- Soru 1 -->
+    <div class="question-box" id="q1">
+        <div class="question-text">S1- İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre risk değerlendirmesi çalışmalarının dokümantasyonu ve geçerliliği ile ilgili aşağıda verilen bilgilerden hangisi doğrudur?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">A) Raporun sadece son sayfasının işveren tarafından imzalanması yeterlidir</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">B) Risk değerlendirmesi dokümanı kesinlikle elektronik ortamda hazırlanamaz veya arşivlenemez</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">C) İş güvenliği uzmanı ve işyeri hekiminin imzası raporun geçerliliği için yeterlidir</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol1', 'q1')">D) Dokümanın sayfaları numaralandırılarak, gerçekleştiren kişiler tarafından her sayfası paraflanıp, son sayfası imzalanır</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">E) Geçerlilik tarihi raporda yer almak zorunda değildir, tehlike sınıfına göre otomatik belirlenir</li>
+        </ul>
+        <div class="solution" id="sol1">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Dokümanın sayfaları numaralandırılarak, gerçekleştiren kişiler tarafından her sayfası paraflanıp, son sayfası imzalanır</strong></p>
+            <p>Yönetmeliğin "Risk değerlendirmesinin dokümantasyonu" başlıklı 11. Maddesine göre risk değerlendirmesi dokümanının sayfaları numaralandırılır, dokümanı hazırlayan (işveren, uzman, hekim ve diğer ekip üyeleri) kişiler tarafından her sayfası paraflanır ve son sayfası eksiksiz olarak imzalanır. Elektronik ortamda da arşivlenebilir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 2 -->
+    <div class="question-box" id="q2">
+        <div class="question-text">S2- İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre risk değerlendirmesi yenilenme süreleri ile ilgili olarak; Az Tehlikeli, Tehlikeli ve Çok Tehlikeli işyerlerinde sırasıyla en geç kaç yılda bir yenileme yapılmalıdır?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol2', 'q2')">A) 6-4-2</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">B) 5-3-1</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">C) 4-3-2</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">D) 3-2-1</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">E) 2-4-6</li>
+        </ul>
+        <div class="solution" id="sol2">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) 6-4-2</strong></p>
+            <p>Risk değerlendirmesi, tehlike sınıfına göre periyodik olarak yenilenmek zorundadır. Bu süreler; <strong>Çok Tehlikeli</strong> sınıfta en geç 2 yılda bir, <strong>Tehlikeli</strong> sınıfta en geç 4 yılda bir, <strong>Az Tehlikeli</strong> sınıfta ise en geç 6 yılda birdir. Soru sırasıyla Az Tehlikeli - Tehlikeli - Çok Tehlikeli sorduğu için sıralama 6, 4, 2 şeklinde olacaktır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 3 -->
+    <div class="question-box" id="q3">
+        <div class="question-text">S3- İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre risk değerlendirmesi; tüm işyerleri için hangi aşamadan başlamak üzere gerçekleştirilmelidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">A) İşletmeye tam kapasite personel alımı aşamasında</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">B) İlk iş kazası veya ramak kala olayın gerçekleşmesinden sonra</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">C) İlk Bakanlık teftişi aşamasında</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">D) Deneme üretimi aşamasında</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol3', 'q3')">E) Tasarım veya kuruluş aşamasında</li>
+        </ul>
+        <div class="solution" id="sol3">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Tasarım veya kuruluş aşamasında</strong></p>
+            <p>Risk değerlendirmesi, tehlikeleri henüz ortaya çıkmadan öngörebilmek ve işyerini proaktif bir yaklaşımla güvenli hale getirmek için işyerinin <strong>tasarım veya kuruluş aşamasından</strong> başlanarak gerçekleştirilmelidir (Yönetmelik Madde 7).</p>
+        </div>
+    </div>
+
+    <!-- Soru 4 -->
+    <div class="question-box" id="q4">
+        <div class="question-text">S4- İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre birden fazla işverenin bulunduğu iş merkezleri, iş hanları, sanayi bölgeleri veya siteleri gibi yerlerde, ayrı ayrı gerçekleştirilen risk değerlendirmesi çalışmalarının koordinasyonu aşağıdakilerden hangisi tarafından yürütülür?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol4', 'q4')">A) İş merkezi, sanayi sitesi vb. yönetimi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">B) İş merkezi, sanayi sitesi vb.’nin en büyük işveri</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">C) Çalışma ve Sosyal Güvenlik Bakanlığı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">D) Sosyal Güvenlik Kurumu (SGK)</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">E) Valilik</li>
+        </ul>
+        <div class="solution" id="sol4">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) İş merkezi, sanayi sitesi vb. yönetimi</strong></p>
+            <p>Yönetmeliğin 15. Maddesine göre; birden fazla işyerinin bulunduğu iş merkezleri, iş hanları ve sanayi sitelerinde risk değerlendirmesi çalışmalarının koordinasyonunu sağlamak, ortak tehlikelere karşı bütüncül önlemler almak <strong>iş merkezi veya sanayi sitesi yönetiminin</strong> sorumluluğundadır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 5 -->
+    <div class="question-box" id="q5">
+        <div class="question-text">S5- Aşağıdakilerden hangisi İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre risk değerlendirmesi ekibinde bulunması zorunlu olan kişilerden biri değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">A) İşveren veya işveren vekili</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">B) İşyerindeki destek elemanları</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">C) İşyerindeki çalışan temsilcileri</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol5', 'q5')">D) İşyeri dışından hizmet alınan İSG danışmanı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">E) İş güvenliği uzmanı ile işyeri hekimi</li>
+        </ul>
+        <div class="solution" id="sol5">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) İşyeri dışından hizmet alınan İSG danışmanı</strong></p>
+            <p>Risk değerlendirmesi ekibi (Madde 6) asgari olarak; İşveren/Vekili, İSG Uzmanı, İşyeri Hekimi, Çalışan Temsilcisi, Destek Elemanları ve tehlikeler hakkında bilgi sahibi olan çalışanlardan oluşur. İhtiyaç duyulması halinde işyeri dışından uzman kişi veya kurumlardan danışmanlık hizmeti <em>alınabilir</em>, ancak dışarıdan "danışman" bulundurulması ekibin <strong>zorunlu</strong> bir parçası değildir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 6 -->
+    <div class="question-box" id="q6">
+        <div class="question-text">S6- İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre aşağıdaki durumlardan hangisinde risk değerlendirmesinin tamamen veya kısmen yenilenmesi zorunlu değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">A) İşyerinin taşınması veya binalarda değişiklik yapılması</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol6', 'q6')">B) İşyerinde yeni bir vardiya şefinin işe başlaması</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">C) İş kazası, meslek hastalığı veya ramak kala olay meydana gelmesi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">D) Çalışma ortamına ait sınır değerlere ilişkin bir mevzuat değişikliği olması</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">E) Üretim yönteminde değişiklikler olması</li>
+        </ul>
+        <div class="solution" id="sol6">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) İşyerinde yeni bir vardiya şefinin işe başlaması</strong></p>
+            <p>Risk değerlendirmesinin yenilenmesini gerektiren durumlar çalışma ortamının, yönteminin veya yasal dayanakların kökten değiştiği hallerdir. Bina değişikliği, iş kazası/ramak kala olay yaşanması, sınır değer mevzuatlarının değişmesi veya üretim yönteminin değişmesi risk analizinin yenilenmesini zorunlu kılar. Ancak sadece kadroda bir yöneticinin/şefin değişmesi tek başına yenileme zorunluluğu doğurmaz.</p>
+        </div>
+    </div>
+
+    <!-- Soru 7 -->
+    <div class="question-box" id="q7">
+        <div class="question-text">S7- İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre “İşyerinde var olan ya da dışarıdan gelebilecek, çalışanı veya işyerini etkileyebilecek zarar veya hasar verme potansiyelini” şeklinde tanımlanan kavram aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">A) Risk</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol7', 'q7')">B) Tehlike</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">C) Olay</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">D) Kaza</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">E) Güvenlik</li>
+        </ul>
+        <div class="solution" id="sol7">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) Tehlike</strong></p>
+            <p>İSG terminolojisinde; çalışana, işyerine ve çevreye zarar verme "potansiyeli" taşıyan her türlü kaynağa veya duruma <strong>Tehlike</strong> denir. Bu potansiyelin gerçekleşme ihtimali ve sonuçlarının şiddetinin bileşkesine ise <em>Risk</em> denir. Sorudaki tanım açıkça tehlike tanımıdır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 8 -->
+    <div class="question-box" id="q8">
+        <div class="question-text">S8- İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre "tehlikeler tanımlanırken" çalışma ortamı, çalışanlar ve işyerine ilişkin asgari olarak toplanması gereken bilgiler arasında aşağıdakilerden hangisi yer almaz?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">A) İş kazası ve meslek hastalığı kayıtları</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">B) Malzeme güvenlik bilgi formları (MSDS)</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol8', 'q8')">C) Çalışanların verimlilik değerlendirme raporları</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">D) Genç, yaşlı, engelli, gebe veya emziren çalışanların durumu</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">E) Ramak kala olay kayıtları</li>
+        </ul>
+        <div class="solution" id="sol8">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Çalışanların verimlilik değerlendirme raporları</strong></p>
+            <p>Tehlikeler tanımlanırken iş sağlığı ve güvenliğini ilgilendiren teknik dokümanlar, kaza kayıtları, risk altındaki özel gruplar ve malzeme formları incelenir. <strong>Çalışan verimlilik/performans raporları</strong> İK (İnsan Kaynakları) ve üretim yönetimiyle ilgili işletmesel belgelerdir, doğrudan İSG tehlike tanımı aşamasında toplanacak zorunlu asgari bilgiler arasında yer almaz.</p>
+        </div>
+    </div>
+
+    <!-- Soru 9 -->
+    <div class="question-box" id="q9">
+        <div class="question-text">S9- İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre risklerin analiz edilmesinde kullanılacak yöntem veya yöntemler seçilirken aşağıdaki faktörlerden hangisi esas alınmaz?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">A) İşletmenin faaliyetine ilişkin özellikleri</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">B) İşyerindeki tehlike veya risklerin nitelikleri</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">C) İşyerinin kısıtları</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">D) Ulusal veya uluslararası standartlar</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol9', 'q9')">E) Bir önceki yıl işyerinde meydana gelen kaza sayısı</li>
+        </ul>
+        <div class="solution" id="sol9">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Bir önceki yıl işyerinde meydana gelen kaza sayısı</strong></p>
+            <p>Yönetmeliğin 9. Maddesine göre risk analizi yöntemi; işletmenin faaliyet özellikleri, tehlike/risklerin türü, işyerinin fiziksel veya organizasyonel kısıtları ile ulusal/uluslararası kabul görmüş standartlar dikkate alınarak seçilir. Geçmişteki "kaza sayısı" metodolojiyi (Matrix, FMEA, HAZOP vs.) belirlemek için bir kıstas değildir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 10 -->
+    <div class="question-box" id="q10">
+        <div class="question-text">S10- İş sağlığı ve güvenliği risk yönetim sürecinin yukarıda verilen aşamalarının öncelikli olandan başlamak üzere doğru sıralanışı aşağıdakilerden hangisidir?<br>
+        I – Risk Kontrolü<br>
+        II – Risk Yönetimi Ekibinin Kurulması<br>
+        III – Risklerin Değerlendirilmesi<br>
+        IV – Dokümantasyon<br>
+        V – Tehlikelerin Tanımlanması<br>
+        VI – Güncelleme ve Yenileme</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">A) I – III – V – II – VI – IV</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol10', 'q10')">B) II – V – III – I – IV – VI</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">C) II – I – V – III – IV – VI</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">D) III – I – II – V – IV – VI</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">E) IV – II – V – I – III – VI</li>
+        </ul>
+        <div class="solution" id="sol10">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) II – V – III – I – IV – VI</strong></p>
+            <p>Risk yönetim sürecinin standart mantıksal sıralaması şöyledir: Önce çalışmayı yürütecek <strong>Ekip Kurulur (II)</strong>, sahadaki <strong>Tehlikeler Tanımlanır (V)</strong>, bu tehlikelerin büyüklüğüne göre <strong>Riskler Değerlendirilir/Analiz Edilir (III)</strong>, uygun önlemlerle <strong>Risk Kontrolü (I)</strong> sağlanır, yapılan tüm çalışmalar <strong>Dokümante Edilir (IV)</strong> ve periyodik olarak veya değişimlerde <strong>Güncellenir (VI)</strong>.</p>
+        </div>
+    </div>
+
+    <!-- Soru 11 -->
+    <div class="question-box" id="q11">
+        <div class="question-text">S11- İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre, yukarıdakilerden Hangisi/hangileri, tehlikelerin tanımlanması aşamasında toplanması gereken asgari bilgiler arasında yer almaktadır?<br>
+        I – İş ekipmanları<br>
+        II – Atık ve artıklarla ilgili işlemler<br>
+        III – Çalışanların tecrübe ve düşünceleri</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">A) Yalnız I</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">B) Yalnız II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">C) I ve II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">D) II ve III</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol11', 'q11')">E) I, II ve III</li>
+        </ul>
+        <div class="solution" id="sol11">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) I, II ve III</strong></p>
+            <p>Yönetmeliğin tehlike tanımlama aşamasında (Madde 8) toplanması zorunlu asgari bilgiler kapsamlıdır. Çalışılan ortamdaki <strong>iş ekipmanlarının durumu</strong>, üretim sonucu ortaya çıkan <strong>atık ve artıkların yönetimi</strong> ve sahada bizzat çalışan işçilerin <strong>tecrübe ve geri bildirimleri</strong> mutlaka dikkate alınmalıdır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 12 -->
+    <div class="question-box" id="q12">
+        <div class="question-text">S12- İş Sağlığı ve Güvenliği Risk Değerlendirmesi Yönetmeliği’ne göre asıl işveren ve alt işveren (taşeron) ilişkisinin bulunduğu işyerlerinde risk değerlendirmesi süreci ile ilgili aşağıda belirtilen ifadelerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">A) Her alt işveren yürüttükleri işlerle ilgili olarak gerekli risk değerlendirmesi çalışmalarını yapar veya yaptırır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">B) Alt işverenler hazırladıkları risk değerlendirmesinin bir nüshasını asıl işverene verir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">C) Asıl işveren, alt işverenlerce yürütülen risk değerlendirmesi çalışmalarını denetler ve koordine eder.</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol12', 'q12')">D) Alt işverenlerin yaptığı risk değerlendirmesi çalışmaları asıl işverenin sorumluluğunda olmadığından, asıl işveren bu çalışmaları kendi çalışmasıyla bütünleştiremez.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">E) Asıl işveren, alt işverenlerin risk değerlendirmesi çalışmaları için ihtiyaç duyduğu kendi sorumluluk alanındaki bilgi ve belgeleri sağlamakla yükümlüdür.</li>
+        </ul>
+        <div class="solution" id="sol12">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Alt işverenlerin yaptığı risk değerlendirmesi çalışmaları asıl işverenin sorumluluğunda olmadığından, asıl işveren bu çalışmaları kendi çalışmasıyla bütünleştiremez.</strong></p>
+            <p>Yönetmelik Madde 14'e göre; Asıl işveren (ana yüklenici), alt işverenlerin (taşeronların) yürüttüğü risk değerlendirmesi çalışmalarını kendi çalışmalarıyla <strong>bütünleştirmekle ve bizzat koordine/denetlemekle yükümlüdür.</strong> Sahadaki genel İSG sorumluluğu asıl işveren şemsiyesi altındadır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 13 -->
+    <div class="question-box" id="q13">
+        <div class="question-text">S13- L-Tipi matris yöntemi ile ilgili aşağıdaki ifadelerden hangisi doğrudur?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol13', 'q13')">A) Risk skoru 1 ile 25 arasında değişmektedir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">B) Riskin kabul edilebilir olması için risk skoru en fazla 8 olabilir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">C) Olasılık, şiddet ve maruziyet sıklığı ölçütlerine göre risk analizi yapılır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">D) Risk skoru 15 olan bir tehlikeye yönelik ilave tedbirler yıllık eylem planına alınabilir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">E) Risk skoru 6 olan bir tehlikeye yönelik tedbirler acil eylem planına alınmalıdır.</li>
+        </ul>
+        <div class="solution" id="sol13">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Risk skoru 1 ile 25 arasında değişmektedir.</strong></p>
+            <p>Klasik L-Tipi Matris 5x5 boyutlarındadır (Olasılık 1'den 5'e, Şiddet 1'den 5'e kadar puanlanır). İkisinin çarpımıyla risk skoru bulunur ve bu skor en az 1x1=<strong>1</strong>, en çok 5x5=<strong>25</strong> arasında değişir. (C şıkkı maruziyet sıklığı dediği için yanlıştır, bu Fine-Kinney'de vardır).</p>
+        </div>
+    </div>
+
+    <!-- Soru 14 -->
+    <div class="question-box" id="q14">
+        <div class="question-text">S14- Fine&Kinney risk değerlendirme yönteminde dikkate alınan faktörler aşağıdakilerden hangisinde doğru olarak verilmiştir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">A) Olasılık – Şiddet</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">B) Maruziyet Sıklığı – Şiddet – Tespit Edilebilirlik</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">C) Maruziyet Sıklığı – Şiddet – Anahtar Kelime</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol14', 'q14')">D) Olasılık – Şiddet – Maruziyet Sıklığı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">E) Şiddet – Frekans – Tespit Edilebilirlik</li>
+        </ul>
+        <div class="solution" id="sol14">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Olasılık – Şiddet – Maruziyet Sıklığı</strong></p>
+            <p>Fine & Kinney metodunda klasik yöntemlere ek olarak süreklilik faktörü devreye girer. Formül şöyledir: <strong>Risk = Olasılık x Şiddet x Frekans (Maruziyet Sıklığı)</strong>. Tespit edilebilirlik (Detection) FMEA metoduna ait bir faktördür.</p>
+        </div>
+    </div>
+
+    <!-- Soru 15 -->
+    <div class="question-box" id="q15">
+        <div class="question-text">S15- Risk değerlendirmesi yöntemleri ile ilgili aşağıdaki ifadelerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">A) L-Tipi matris yöntemi ile kantitatif risk değerlendirmesi yapılamaz.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">B) FMEA yöntemi ile kalitatif risk değerlendirmesi yapılabilir.</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol15', 'q15')">C) Olay ağacı analizi ile kantitatif risk değerlendirmesi yapılamaz.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">D) HAZOP yöntemi ile kalitatif risk değerlendirmesi yapılabilir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">E) Fine&Kinney yöntemi kantitatif risk değerlendirmesi için uygun bir yöntem değildir</li>
+        </ul>
+        <div class="solution" id="sol15">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Olay ağacı analizi ile kantitatif risk değerlendirmesi yapılamaz.</strong></p>
+            <p>Olay Ağacı Analizi (Event Tree Analysis - ETA), belirli bir başlatıcı olayın hangi sonuçlara evrileceğini olasılık hesaplamaları (dal olasılıklarının çarpımı) ile matematiksel olarak çözen, son derece <strong>kantitatif (nicel)</strong> bir risk değerlendirme yöntemidir. Dolayısıyla yapılamaz ifadesi kesinlikle yanlıştır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 16 -->
+    <div class="question-box" id="q16">
+        <div class="question-text">S16- HAZOP yöntemiyle ilgili aşağıda verilen ifadelerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol16', 'q16')">A) Kantitatif (nicel) bir risk analizi yöntemi olup, olay ağacı analizi gibi olasılık ve frekans hesabı yapar</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">B) İnsan hatalarını ve işletme problemlerini (operability) ortaya çıkarmada oldukça etkilidir</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">C) Disiplinler arası bir ekip tarafından beyin fırtınası yöntemiyle yürütülür</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">D) Esas olarak tesisin tasarım aşamasında veya büyük modifikasyonlardan önce uygulanması en ideal olan yöntemdir</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">E) Geçmiş kaza verilerine bağımlı kalmadan, henüz yaşanmamış teorik tehlike senaryolarını da üretebilir</li>
+        </ul>
+        <div class="solution" id="sol16">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Kantitatif (nicel) bir risk analizi yöntemi olup, olay ağacı analizi gibi olasılık ve frekans hesabı yapar</strong></p>
+            <p>HAZOP (Tehlike ve İşletilebilirlik Çalışması), matematiksel formüller veya frekans hesabı yapan nicel (kantitatif) bir yöntem değil; kılavuz kelimeler (Yok, Fazla, Az, Ters vb.) kullanılarak disiplinler arası bir ekibin beyin fırtınası yürüttüğü <strong>kalitatif (nitel)</strong> bir yöntemdir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 17 -->
+    <div class="question-box" id="q17">
+        <div class="question-text">S17- Yukarıda verilen olay ağacına ve olasılıklara göre sistemde patlama meydana gelme olasılığı aşağıdakilerden hangisidir?<br><em>(Görsel Verisi: Basınç Yükselir(1,00) -> Regülatör Çalışmaz(0,10) -> Sızıntı Olur(0,10) -> Patlama)</em></div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">A) 0,0001</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">B) 0,001</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol17', 'q17')">C) 0,01</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">D) 0,1</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">E) 1,0</li>
+        </ul>
+        <div class="solution" id="sol17">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) 0,01</strong></p>
+            <p>Olay ağacı analizinde (ETA) belirli bir sonucun meydana gelme olasılığı, o sonuca giden yoldaki (dallardaki) tüm olasılıkların çarpılmasıyla bulunur. Sorudaki görsele göre "Patlama" olabilmesi için:<br>
+            1. Başlatıcı olay (Basınç Yükselir): 1,00<br>
+            2. Regülatör Çalışmaz dalı: 0,10<br>
+            3. Sızıntı Olur dalı: 0,10<br>
+            Hesaplama: <strong>1,00 × 0,10 × 0,10 = 0,01</strong> olarak bulunur.</p>
+        </div>
+    </div>
+
+    <!-- Soru 18 -->
+    <div class="question-box" id="q18">
+        <div class="question-text">S18- FMEA analizinde risklerin önceliklendirilmesi için kullanılan Risk Öncelik Sayısı (RÖS) hesaplanırken hangi üç temel değişken çarpılır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">A) Frekans × Maruziyet × Zarar Verme Derecesi</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol18', 'q18')">B) Şiddet × Olasılık × Tespit Edilebilirlik</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">C) Tehlike × Risk × Önleme</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">D) Maliyet × Zaman × Kalite</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">E) Şiddet × Sıklık × Çalışan Sayısı</li>
+        </ul>
+        <div class="solution" id="sol18">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) Şiddet × Olasılık × Tespit Edilebilirlik</strong></p>
+            <p>Hata Türleri ve Etkileri Analizi (FMEA) yönteminde Risk Öncelik Sayısı (RÖS - RPN) üç bağımsız değişkenin çarpılmasıyla bulunur: Hatanın gerçekleşme <strong>Olasılığı (O)</strong>, sonucunun <strong>Şiddeti (S)</strong> ve sistemin bu hatayı yakalama/algılama yeteneği olan <strong>Tespit Edilebilirlik (D)</strong>.</p>
+        </div>
+    </div>
+
+    <!-- Soru 19 -->
+    <div class="question-box" id="q19">
+        <div class="question-text">S19- I – Önceki kazaların sonucu<br>II – Önceki kazalardan etkilenen personel sayısı<br>III – Şiddet<br>Yukarıdakilerden hangisi/hangileri X-Tipi matris yönteminde dikkate alınan faktörler arasında yer almaktadır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">A) Yalnız I</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">B) Yalnız II</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol19', 'q19')">C) I ve II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">D) II ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">E) I, II ve III</li>
+        </ul>
+        <div class="solution" id="sol19">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) I ve II</strong></p>
+            <p><strong>Matris X-Tipi</strong> risk değerlendirmesi, tek başına daha önce meydana gelmiş kazaların ve geçmiş tecrübelerin değerlendirildiği bir metottur. Değerlendirme yaparken genel olasılık ve şiddet değerleri (L-Tipi gibi) yerine; <strong>Geçmiş (önceki) kazaların doğrudan sonuçlarını</strong> ve bu <strong>önceki kazalardan etkilenen personel sayısını</strong> baz alır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 20 -->
+    <div class="question-box" id="q20">
+        <div class="question-text">S20- I – Hata Ağacı Analizi, "Tepe Olay" olarak adlandırılan istenmeyen bir durumun nedenlerini bulmak için tümdengelim yöntemini kullanır; Olay Ağacı Analizi ise başlatıcı bir olaydan yola çıkarak olası sonuçları belirlemek için tümevarım yöntemini kullanır.<br>II – Hata Ağacı Analizinde olaylar arasındaki mantıksal bağlar "VE" ile "VEYA" gibi mantıksal kapılarla kurulurken; Olay Ağacı Analizinde süreç, sistemlerin ve bileşenlerinin çalışıp çalışmamasına (Başarılı/Başarısız) göre dallanarak ilerler.<br>III – Hata Ağacı Analizi hem kalitatif hem de kantitatif olarak uygulanabilirken; Olay Ağacı Analizi yapısı gereği sadece kantitatif (nicel) bir yöntemdir.<br>Yukarıdaki ifadelerden hangisi/hangileri doğrudur?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">A) Yalnız I</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">B) Yalnız II</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol20', 'q20')">C) I ve II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">D) II ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">E) I, II ve III</li>
+        </ul>
+        <div class="solution" id="sol20">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) I ve II</strong></p>
+            <p>I. ifade FTA (yukarıdan aşağı/tümdengelim) ve ETA (aşağıdan yukarı/tümevarım) işleyişini doğru özetler. II. ifade FTA'daki mantık kapılarını (AND/OR) ve ETA'daki başarı/başarısızlık dallanmasını doğru tanımlar. Ancak III. ifade yanlıştır; çünkü <strong>Olay Ağacı Analizi (ETA) sadece kantitatif değil, aynı zamanda ihtimalleri hesaplamadan senaryo kurmak amacıyla kalitatif (nitel) olarak da</strong> kullanılabilir.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>hazırlayan Sıraç AKSAN</strong></p>
+    </div>
+</div>
+
+</body>
+</html>

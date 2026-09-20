@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapı İşlerinde Güvenlik | Çözümlü Sorular</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-bg: #d4edda;
+            --success-border: #c3e6cb;
+            --success-text: #155724;
+            --error-bg: #f8d7da;
+            --error-border: #f5c6cb;
+            --error-text: #721c24;
+            --bg-color: #f4f7f6;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg-color); 
+            color: #333; 
+            line-height: 1.6; 
+            padding: 20px; 
+            margin: 0;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .home-link {
+            text-decoration: none;
+            color: #fff;
+            background-color: var(--secondary-color);
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .home-link:hover { background-color: #2980b9; }
+        .header-titles { text-align: right; }
+        h1 { color: var(--primary-color); margin: 0; font-size: 1.5em; }
+        h1 small { display: block; font-size: 0.65em; color: #7f8c8d; margin-top: 5px; font-weight: normal; }
+        
+        .question-box { 
+            margin-bottom: 40px; 
+            padding: 25px; 
+            border: 1px solid #eaeaea; 
+            border-radius: 10px; 
+            background-color: #fafbfc; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03); 
+        }
+        .question-text { 
+            font-weight: 600; 
+            font-size: 1.1em; 
+            margin-bottom: 20px; 
+        }
+        .options { list-style-type: none; padding: 0; margin: 0; }
+        .option { 
+            margin: 10px 0; 
+            padding: 12px 15px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            background-color: #fff; 
+            font-size: 1.05em; 
+        }
+        .option:hover { background-color: #f1f1f1; border-color: #ccc; }
+        
+        .option.correct { 
+            background-color: var(--success-bg) !important; 
+            border-color: var(--success-border) !important; 
+            color: var(--success-text) !important; 
+            font-weight: bold; 
+        }
+        .option.wrong { 
+            background-color: var(--error-bg) !important; 
+            border-color: var(--error-border) !important; 
+            color: var(--error-text) !important; 
+            text-decoration: line-through; 
+        }
+        .disabled { pointer-events: none; }
+        
+        .solution { 
+            display: none; 
+            margin-top: 20px; 
+            padding: 20px; 
+            background-color: #eaf4fb; 
+            border-left: 6px solid var(--secondary-color); 
+            border-radius: 6px; 
+            animation: fadeIn 0.5s; 
+        }
+        .solution h4 { margin-top: 0; margin-bottom: 12px; color: #2980b9; font-size: 1.15em; }
+        .solution p { margin: 0 0 10px 0; }
+        .solution p:last-child { margin-bottom: 0; }
+        
+        .footer { 
+            text-align: center; 
+            margin-top: 50px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            font-size: 1.1em; 
+            color: #7f8c8d; 
+        }
+        .footer strong { color: var(--primary-color); }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(-5px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-top">
+        <a href="index.html" class="home-link">🏠 Ana Sayfa</a>
+        <div class="header-titles">
+            <h1>YAPI İŞLERİNDE GÜVENLİK<br><small>2025-2026 BAHAR BÜTÜNLEME – A</small></h1>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(btn, isCorrect, solutionId, questionId) {
+            const options = document.querySelectorAll('#' + questionId + ' .option');
+            
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                if (opt.dataset.correct === 'true') {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            if (!isCorrect) {
+                btn.classList.add('wrong');
+            }
+            
+            const solDiv = document.getElementById(solutionId);
+            solDiv.style.display = 'block';
+        }
+    </script>
+
+    <!-- Soru 9 -->
+    <div class="question-box" id="q9">
+        <div class="question-text">S9- Yapı işlerinde yüksekte yapılan çalışmalarda düşmeyi önlemek için yapılacak korkuluklarda bir ana korkuluk, bir ara korkuluk ve .................................................. bulunacaktır. Cümlesinde noktalı yere aşağıdakilerden hangisinin gelmesi gerekir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">A) Eteklik</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">B) Süpürgelik</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol9', 'q9')">C) Topuk levhası</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">D) Bunları bağlayan çaprazlar</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">E) Aralarında yeterli yükseklik</li>
+        </ul>
+        <div class="solution" id="sol9">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Topuk levhası</strong></p>
+            <p>Yapı İşlerinde İş Sağlığı ve Güvenliği Yönetmeliği Ek-4'e göre geçici kenar koruma sistemleri (korkuluklar) standart olarak üç ana bileşenden oluşur: Çalışanın düşmesini önleyen <strong>ana korkuluk</strong>, ortadan kaymayı/düşmeyi önleyen <strong>ara korkuluk</strong> ve malzeme/alet düşmesini engelleyen <strong>topuk levhası</strong>. Eteklik ve süpürgelik piyasada aynı amaçla kullanılan terimler olsa da mevzuattaki resmi karşılığı "topuk levhası"dır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 10 -->
+    <div class="question-box" id="q10">
+        <div class="question-text">S10- Yapı işlerinde Enerji Dağıtım Tesisleri ve Elektrikle Çalışma ile ilgili aşağıdakilerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">A) Yangın veya patlama riski oluşturmayacak şekilde tasarlanarak kurulur ve işletilir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">B) Kişilerin, doğrudan veya dolaylı teması sonucu elektrik çarpması riskine karşı korunması sağlanır.</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol10', 'q10')">C) Elektrikle ilgili bütün ekipman ve bağlantıların kurulması ve sökülmesi hariç tamirat ve tadilat işleri sadece yetkili elektrikçiler tarafından yapılır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">D) Yapı alanı içerisindeki ana pano ve tali elektrik panolarında uygun kaçak akım rölesi kullanılır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">E) Yapı alanında elektrik bağlantıları için uygun bağlantı elemanları kullanılır, açık uçlu kablolarla bağlantı yapılmaz.</li>
+        </ul>
+        <div class="solution" id="sol10">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Elektrikle ilgili bütün ekipman ve bağlantıların kurulması ve sökülmesi hariç tamirat ve tadilat işleri sadece yetkili elektrikçiler tarafından yapılır.</strong></p>
+            <p>Yönetmeliğe göre elektrik tesisatının <strong>kurulması, sökülmesi, tamiratı ve tadilatı dâhil olmak üzere tüm aşamaları</strong> sadece mesleki yeterliliğe sahip yetkili elektrikçiler tarafından yapılmalıdır. "Kurulması ve sökülmesi hariç" ibaresi bu nedenle kesinlikle yanlıştır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 11 -->
+    <div class="question-box" id="q11">
+        <div class="question-text">S11- Yapı işyerlerinde sağlık ve güvenlik koordinatörlerinin atanmasına ilişkin olarak aşağıdakilerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">A) Aynı yapı alanında bir veya daha fazla işveren veya alt işverenin iş yaptığı durumda, işveren veya proje sorumlusu, sağlık ve güvenlik konularında bir veya daha fazla koordinatör atayacaktır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">B) Boğulma riski bulunan işlerde koordinatör atanması gerekir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">C) Yüksekte çalışma ve düşme tehlikesi olan işlerde koordinatör atanması gerekir.</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol11', 'q11')">D) Ağır prefabrike elemanların montaj ve söküm işlerinde koordinatör atanmayabilir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">E) Basınçlı keson içinde yapılan işlerde koordinatör atanması gerekir.</li>
+        </ul>
+        <div class="solution" id="sol11">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Ağır prefabrike elemanların montaj ve söküm işlerinde koordinatör atanmayabilir.</strong></p>
+            <p>Yapı İşlerinde İSG Yönetmeliği Ek-2'de "İş Sağlığı ve Güvenliği Risklerini İçeren Çalışmalar Listesi" bulunur. Ağır prefabrike elemanların montaj ve söküm işleri yüksek derecede risk barındırdığı için bu listeye dâhildir. Bu tür özellikli riskli işlerin yürütüldüğü şantiyelerde sağlık ve güvenlik koordinatörünün atanması ve İSG planının uygulanması zaruridir; "atanmayabilir" ifadesi mevzuata ve iş güvenliği mantığına aykırıdır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 12 -->
+    <div class="question-box" id="q12">
+        <div class="question-text">S12- YİİSGY de belirtilen İş Sağlığı ve Güvenliği Risklerini İçeren Çalışmalar ile ilgili olarak aşağıda verilenlerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">A) Yüksek gerilim hatları yakınındaki işler.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">B) Boğulma riski bulunan işler.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">C) Kuyu, yer altı kazıları ve tünel işleri.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">D) Hava beslemeli sistem kullanan dalgıçların yaptığı işler.</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol12', 'q12')">E) Hazır kalıp kullanımını gerektiren işler.</li>
+        </ul>
+        <div class="solution" id="sol12">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Hazır kalıp kullanımını gerektiren işler.</strong></p>
+            <p>Yönetmeliğin Ek-2 listesi (İş Sağlığı ve Güvenliği Risklerini İçeren Çalışmalar Listesi), standart inşaat işlerinden ziyade spesifik ve büyük risk barındıran işleri kapsar. Yüksek gerilim, boğulma, tünel, kuyu ve dalgıçlık bu listededir. <strong>Hazır kalıp kullanımı</strong> ise neredeyse her modern inşaatta olan standart bir uygulamadır ve özel riskli çalışmalar listesinde (Ek-2) sayılmamıştır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 13 -->
+    <div class="question-box" id="q13">
+        <div class="question-text">S13- Aşağıdakilerden hangisi Cephe İskelelerinin kurma, kullanma ve sökme planında yer alması gereken asgari hususlardan değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">A) İskele sistemi ile ilgili yük sınıfı, yükseklik ve genişlik sınıflarının yer aldığı detay bilgiler bulunmalıdır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">B) İskele ankraj düzeni, ankraj elemanları ve bu elemanların yapıya uygun şekilde yerleştirilmesine dair bilgiler.</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol13', 'q13')">C) Kurma kullanma ve sökme planını yapan yetkili mühendisler ve kullandıkları programlar hakkında bilgi bulunmalıdır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">D) İskelenin kurulacağı zemin koşulları, yaya ve araç trafiği, kazılar ile mevcut enerji hatlarına mesafesi gibi çalışma alanına dair bilgiler bulunmalıdır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">E) Kurulum ve söküm sırasında oluşabilecek tehlike ve riskler ile kontrol tedbirlerine dair bilgiler bulunmalıdır.</li>
+        </ul>
+        <div class="solution" id="sol13">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Kurma kullanma ve sökme planını yapan yetkili mühendisler ve kullandıkları programlar hakkında bilgi bulunmalıdır.</strong></p>
+            <p>İskele kurma, kullanma ve sökme planı; sahadaki teknik detayları, güvenlik önlemlerini, ankraj düzenini ve statik/yük hesaplarını içermek zorundadır. Planda yetkili kişinin imzasının olması gerekse de, o kişinin statik hesabı yaparken <strong>hangi bilgisayar yazılımını (programı) kullandığının</strong> raporda asgari husus olarak belirtilmesi gibi bir mevzuat zorunluluğu yoktur.</p>
+        </div>
+    </div>
+
+    <!-- Soru 14 -->
+    <div class="question-box" id="q14">
+        <div class="question-text">S14- Aşağıdakilerden hangisi YİİSGY verilen YÜKSEKTE ÇALIŞMA tanımıdır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">A) İki metreden daha yüksekte gerçekleştirilen çalışmalar.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">B) Yüz kırk santimetreden daha yüksekte gerçekleştirilen çalışmalar.</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol14', 'q14')">C) Seviye farkı bulunan ve düşme sonucu yaralanma ihtimalinin oluşabileceği her türlü alanda yapılan çalışmalar.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">D) İki metreden daha yüksekte ve düşme sonucunda ölüm ihtimalinin oluşabileceği alanlarda yapılan çalışmalar.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">E) Yüz kırk santimetreden daha yüksekte ve KKD kullanılarak gerçekleştirilen çalışmalar.</li>
+        </ul>
+        <div class="solution" id="sol14">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Seviye farkı bulunan ve düşme sonucu yaralanma ihtimalinin oluşabileceği her türlü alanda yapılan çalışmalar.</strong></p>
+            <p>Eski mevzuatlarda yer alan 3 metre, 2 metre gibi sayısal kısıtlamalar modern İSG mevzuatıyla kaldırılmıştır. Mevcut Yapı İşlerinde İSG Yönetmeliği Ek-4'e göre; yüksekliğin sayısal değerinden bağımsız olarak, <strong>düşme sonucu yaralanma ihtimali olan her türlü seviye farklılıklarındaki çalışma</strong> "yüksekte çalışma" kabul edilmekte ve buna göre önlem alınması zorunlu kılınmaktadır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 15 -->
+    <div class="question-box" id="q15">
+        <div class="question-text">S15- Seçilen iskelenin karmaşıklığına bağlı olarak kurma, kullanma ve sökme planı; yapı işlerinde Aşağıdakilerden hangisi tarafından yapılmalıdır?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol15', 'q15')">A) İnşaat Mühendisi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">B) Sağlık Güvenlik Koordinatörü</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">C) Makine Mühendisi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">D) Makine Teknikeri</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">E) Proje Müdürü</li>
+        </ul>
+        <div class="solution" id="sol15">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) İnşaat Mühendisi</strong></p>
+            <p>Yönetmeliğe göre iskelelerin kurma, kullanma ve sökme planları iskelenin taşıyacağı statik ve dinamik yüklerin hesabı gereği inşaat disipliniyle ilgilidir. Bu plan; <strong>İnşaat Mühendisi</strong>, inşaat teknikeri veya inşaat yüksek teknikeri tarafından hazırlanır. (Makine veya İSG uzmanları bu hesabı yapmaya yetkili değildir).</p>
+        </div>
+    </div>
+
+    <!-- Soru 16 -->
+    <div class="question-box" id="q16">
+        <div class="question-text">S16- Sütunlu çalışma platformlarında, çalışma platformu üzerinde, platformun hareketi sırasında hangi özellikte sesli ikaz sistemi kullanılmalıdır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">A) Sürekli olacak şekilde otomatik olarak devreye giren</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">B) Sürekli olacak şekilde istenildiğinde devreye giren</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">C) Kesik kesik olacak şekilde istenildiğinde devreye giren</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol16', 'q16')">D) Kesik kesik olacak şekilde otomatik olarak devreye giren</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">E) Yüksekliğe bağlı artarak otomatik olarak devreye giren</li>
+        </ul>
+        <div class="solution" id="sol16">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Kesik kesik olacak şekilde otomatik olarak devreye giren</strong></p>
+            <p>Sütunlu çalışma platformları aşağı veya yukarı doğru hareket etmeye başladığında, çevredeki (özellikle alt kısımdaki) çalışanları uyarmak zorundadır. Bu uyarının insan inisiyatifine bırakılmaması (otomatik olması) ve ortam gürültüsünde fark edilebilmesi için sürekli çalan bir alarm yerine algıyı tetikleyen <strong>fasılalı (kesik kesik)</strong> bip-bip şeklinde bir sesli ikaz olması mevzuatta zorunlu kılınmıştır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 17 -->
+    <div class="question-box" id="q17">
+        <div class="question-text">S17- Sağlık ve Güvenlik Koordinatörleri proje hazırlık aşamasında; proje süresince, birbirini takip eden veya daha sonra yapılacak işler sırasında dikkate alınmak üzere sağlık ve güvenlik bilgilerini, proje tamamlandıktan sonra ise temizlik, bakım, tadilat, yenileme, yıkım işleri gibi her türlü yapı işinin güvenli bir şekilde yerine getirilmesi için ihtiyaç duyulan bilgileri içeren ................................................. hazırlar? Yukarıda bulunan boşluğa uygun olan terim hangisidir.</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">A) İş Sağlığı ve Güvenliği Defteri</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol17', 'q17')">B) Sağlık ve Güvenlik Dosyası</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">C) Kullanılması Gerekli Teçhizat Dosyası</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">D) Periyodik Bakım Dosyası</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">E) Ataşman Dosyası</li>
+        </ul>
+        <div class="solution" id="sol17">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) Sağlık ve Güvenlik Dosyası</strong></p>
+            <p>Yapı işlerinde "Sağlık ve Güvenlik Planı" projenin yapım aşamasındaki riskleri yönetmek için hazırlanır. <strong>Sağlık ve Güvenlik Dosyası</strong> ise yapının kullanım ömrü boyunca (temizlik, bakım, çatı tamiratı, yıkım) ortaya çıkabilecek riskleri ve yapının gizli tehlikelerini (ör. gömülü tesisat yerleri, ankraj noktaları) içeren, proje sonrası için hazırlanan kılavuz niteliğinde hayati bir belgedir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 18 -->
+    <div class="question-box" id="q18">
+        <div class="question-text">S18- YİİSGY de belirtilen İş Sağlığı ve Güvenliği Risklerini İçeren Çalışmalar ile ilgili olarak aşağıda verilenlerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">A) Yüksek gerilim hatları yakınındaki işler.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">B) Boğulma riski bulunan işler.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">C) Kuyu, yer altı kazıları ve tünel işleri.</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol18', 'q18')">D) Hazır kalıp kullanımını gerektiren işler.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">E) Hava beslemeli sistem kullanan dalgıçların yaptığı işler.</li>
+        </ul>
+        <div class="solution" id="sol18">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Hazır kalıp kullanımını gerektiren işler.</strong></p>
+            <p><em>Soru 12 ile aynıdır.</em> Hazır kalıp kullanılması standart bir yapı işi uygulamasıdır ve "Özel Riskler İçeren Çalışmalar" listesinde (Ek-2) bulunmaz. Ancak yüksek gerilim hatları yanında çalışmak veya yeraltı kuyu kazıları gibi işler ekstra tedbir gerektiren spesifik durumlardır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 19 -->
+    <div class="question-box" id="q19">
+        <div class="question-text">S19- Sağlık ve Güvenlik Planı ile ilgili aşağıda verilenlerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol19', 'q19')">A) Aynı yapı sahasında faaliyet gösterecek farklı işverenler, alt işverenler, kendi nam ve hesabına çalışan kişiler ve farklı çalışma ekipleri arasında maliyete dair hususların koordinasyonunun sağlanması amacıyla hazırlanır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">B) Muhtemel riskler değerlendirilip yapı işi süreci boyunca sağlık ve güvenlik ile ilgili alınacak tedbirler belirlenmelidir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">C) Çalışma yöntemleri ve bunlara ilişkin işlerin ne zaman ve kim tarafından yapılması gerektiği belirlenmelidir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">D) Yapı alanının tamamından sorumlu işveren veya proje sorumlusu tarafından hazırlanmalı veya hazırlanması sağlanmalıdır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">E) Organizasyon yapısı belirlenmelidir.</li>
+        </ul>
+        <div class="solution" id="sol19">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Aynı yapı sahasında faaliyet gösterecek farklı işverenler, alt işverenler, kendi nam ve hesabına çalışan kişiler ve farklı çalışma ekipleri arasında maliyete dair hususların koordinasyonunun sağlanması amacıyla hazırlanır.</strong></p>
+            <p>Sağlık ve Güvenlik Planının yegane amacı yapı alanında ortaya çıkabilecek <strong>iş sağlığı ve güvenliği risklerinin önlenmesi ve ekipler arası operasyonel güvenliğin koordinasyonudur.</strong> İşin ihalesi, bütçesi veya maliyete dair koordinasyon İSG planlarının veya sağlık ve güvenlik koordinatörlerinin konusu değildir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 20 -->
+    <div class="question-box" id="q20">
+        <div class="question-text">S20- Yapı İşlerinde İş Sağlığı ve Güvenliği Yönetmeliği’ne göre aşağıdakilerden hangisi Geçici Kenar Koruma Sisteminin bileşimlerinden biri değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">A) Topuk Levhası</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">B) Ara Koruma</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol20', 'q20')">C) Bağlama Halatı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">D) Ana Korkuluk</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">E) Tel Örgü Bariyer</li>
+        </ul>
+        <div class="solution" id="sol20">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Bağlama Halatı</strong></p>
+            <p>Geçici kenar koruma sistemleri (TS EN 13374 standardı) toplu koruma sistemleridir. Bu sistemlerin bileşenleri; ana korkuluk, ara koruma (ara korkuluk veya tel örgü bariyer/ağ) ve topuk levhasından oluşur. <strong>Bağlama halatı (Lanyard)</strong> ise toplu koruma sisteminin bir bileşeni değil, çalışanın doğrudan üzerine giydiği emniyet kemerine ait bir Kişisel Koruyucu Donanım (KKD) bileşenidir.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>hazırlayan Sıraç AKSAN</strong></p>
+    </div>
+</div>
+
+</body>
+</html>

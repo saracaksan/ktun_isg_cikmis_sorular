@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İş Sağlığı ve Güvenliği Yönetim Sistemleri | Çözümlü Sorular</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-bg: #d4edda;
+            --success-border: #c3e6cb;
+            --success-text: #155724;
+            --error-bg: #f8d7da;
+            --error-border: #f5c6cb;
+            --error-text: #721c24;
+            --bg-color: #f4f7f6;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg-color); 
+            color: #333; 
+            line-height: 1.6; 
+            padding: 20px; 
+            margin: 0;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .home-link {
+            text-decoration: none;
+            color: #fff;
+            background-color: var(--secondary-color);
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .home-link:hover { background-color: #2980b9; }
+        .header-titles { text-align: right; }
+        h1 { color: var(--primary-color); margin: 0; font-size: 1.5em; }
+        h1 small { display: block; font-size: 0.65em; color: #7f8c8d; margin-top: 5px; font-weight: normal; }
+        
+        .question-box { 
+            margin-bottom: 40px; 
+            padding: 25px; 
+            border: 1px solid #eaeaea; 
+            border-radius: 10px; 
+            background-color: #fafbfc; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03); 
+        }
+        .question-text { 
+            font-weight: 600; 
+            font-size: 1.1em; 
+            margin-bottom: 20px; 
+        }
+        .options { list-style-type: none; padding: 0; margin: 0; }
+        .option { 
+            margin: 10px 0; 
+            padding: 12px 15px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            background-color: #fff; 
+            font-size: 1.05em; 
+        }
+        .option:hover { background-color: #f1f1f1; border-color: #ccc; }
+        
+        .option.correct { 
+            background-color: var(--success-bg) !important; 
+            border-color: var(--success-border) !important; 
+            color: var(--success-text) !important; 
+            font-weight: bold; 
+        }
+        .option.wrong { 
+            background-color: var(--error-bg) !important; 
+            border-color: var(--error-border) !important; 
+            color: var(--error-text) !important; 
+            text-decoration: line-through; 
+        }
+        .disabled { pointer-events: none; }
+        
+        .solution { 
+            display: none; 
+            margin-top: 20px; 
+            padding: 20px; 
+            background-color: #eaf4fb; 
+            border-left: 6px solid var(--secondary-color); 
+            border-radius: 6px; 
+            animation: fadeIn 0.5s; 
+        }
+        .solution h4 { margin-top: 0; margin-bottom: 12px; color: #2980b9; font-size: 1.15em; }
+        .solution p { margin: 0 0 10px 0; }
+        .solution p:last-child { margin-bottom: 0; }
+        
+        .footer { 
+            text-align: center; 
+            margin-top: 50px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            font-size: 1.1em; 
+            color: #7f8c8d; 
+        }
+        .footer strong { color: var(--primary-color); }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(-5px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-top">
+        <a href="index.html" class="home-link">🏠 Ana Sayfa</a>
+        <div class="header-titles">
+            <h1>İŞ SAĞLIĞI VE GÜVENLİĞİ YÖNETİM SİSTEMLERİ<br><small>2025-2026 BAHAR/FİNAL - B</small></h1>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(btn, isCorrect, solutionId, questionId) {
+            const options = document.querySelectorAll('#' + questionId + ' .option');
+            
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                if (opt.dataset.correct === 'true') {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            if (!isCorrect) {
+                btn.classList.add('wrong');
+            }
+            
+            const solDiv = document.getElementById(solutionId);
+            solDiv.style.display = 'block';
+        }
+    </script>
+
+    <!-- Soru 1 -->
+    <div class="question-box" id="q1">
+        <div class="question-text">S1- ISO 45001:2018, İş sağlığı ve güvenliği yönetim sisteminde “Kuruluş, amaçlanan çıktılara ulaşmak için, bu standardın şartlarına uygun olarak, prosesler ve bunların etkileşimi dahil, bir İSG yönetim sistemi...” ile ilgili aşağıdakilerden hangisinin yapılmasını istemiyor?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">A) Kurmalı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">B) Uygulamalı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">C) Sürdürmeli</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">D) Sürekli iyileştirmeli</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol1', 'q1')">E) Her faaliyeti dokümante etmeli</li>
+        </ul>
+        <div class="solution" id="sol1">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Her faaliyeti dokümante etmeli</strong></p>
+            <p>Yönetim sistemleri standartlarında (ISO 45001, ISO 9001 vb.) ana prensip sistemi "kurmak, uygulamak, sürdürmek ve sürekli iyileştirmek" üzerine kuruludur. Ancak standartlar, bürokratik bir yük yaratmamak adına "her bir faaliyetin/adımın tek tek dokümante edilmesini" <strong>istemez.</strong> Sadece sistemin etkinliği için gerekli görülen hayati süreçlerin ve yasal mevzuatın gerektirdiği bilgilerin (dokümante edilmiş bilgi) kayıt altına alınmasını şart koşar.</p>
+        </div>
+    </div>
+
+    <!-- Soru 2 -->
+    <div class="question-box" id="q2">
+        <div class="question-text">S2- ISO 45001:2018, İş sağlığı ve güvenliği yönetim sistemine göre kuruluş, İSG yönetim sisteminin uygunluğunu, yeterliliğini ve etkinliğini sürekli olarak iyileştirmek için aşağıdakilerden hangisini kullanmasına ihtiyaç yoktur?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">A) İSG performansını artırarak</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">B) İSG yönetim sistemini destekleyen bir kültürü teşvik ederek</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">C) İşçilerin faaliyetlere katılımını teşvik ederek</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol2', 'q2')">D) Müşteri memnuniyetini sağlayarak</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">E) Sürekli iyileştirmenin sonuçlarını çalışanlarla ve var olmaları durumunda çalışan temsilcilerine ileterek</li>
+        </ul>
+        <div class="solution" id="sol2">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Müşteri memnuniyetini sağlayarak</strong></p>
+            <p>Müşteri memnuniyetini sağlamak ve artırmak, <strong>ISO 9001 Kalite Yönetim Sistemi</strong>'nin temel amacıdır. ISO 45001 İş Sağlığı ve Güvenliği Yönetim Sistemi'nin odak noktası ise çalışanların sağlığını korumak, güvenli bir çalışma ortamı sağlamak ve İSG performansını (kültür, katılım, iletişim vb. yollarla) sürekli artırmaktır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 3 -->
+    <div class="question-box" id="q3">
+        <div class="question-text">S3- Belirli bir amacı olan, elemanlardan meydana gelen ve elemanlar arasında etkileşim bulunan topluluk, aşağıdaki kavramlardan hangisi ile tanımlanır?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol3', 'q3')">A) Sistem</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">B) Yönetim</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">C) Proses</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">D) Kalite Yönetimi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">E) Kalite Sistemi</li>
+        </ul>
+        <div class="solution" id="sol3">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Sistem</strong></p>
+            <p>Parçaların (elemanların) ortak bir amaca ulaşmak için bir araya gelmesi ve kendi aralarında anlamlı bir ilişki/etkileşim kurması bütününe <strong>Sistem</strong> denir. Süreçlerin (proseslerin) birbirleriyle etkileşime girerek oluşturduğu yapı, Yönetim Sistemlerinin (Kalite, İSG, Çevre) de temel dayanağıdır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 4 -->
+    <div class="question-box" id="q4">
+        <div class="question-text">S4- ISO, aşağıda verilen hangi konuların dışında, bütün teknik ve teknik dışı dallardaki standartların belirlenmesi çalışmalarını yürütmek gayesiyle 23 Şubat 1947 tarihinde Cenevre'de kurulan uluslararası bir organizasyondur?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol4', 'q4')">A) Elektrik ve elektronik mühendisliği</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">B) İnşaat mühendisliği</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">C) Otomotiv mühendisliği</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">D) Kimya mühendisliği</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">E) Makina mühendisliği</li>
+        </ul>
+        <div class="solution" id="sol4">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Elektrik ve elektronik mühendisliği</strong></p>
+            <p>Uluslararası Standartlar Teşkilatı (ISO), dünya çapında neredeyse her alanda standardizasyon yapar. Ancak <strong>elektrik, elektronik ve ilgili teknolojiler</strong> alanındaki uluslararası standartlar ISO tarafından değil, bir başka köklü kuruluş olan <strong>IEC (Uluslararası Elektroteknik Komisyonu)</strong> tarafından hazırlanır ve yayımlanır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 5 -->
+    <div class="question-box" id="q5">
+        <div class="question-text">S5- Aşağıda verilenlerden hangisi ISO’nun görevleri arasında değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol5', 'q5')">A) ISO belgesi vermek</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">B) Ürün standardı geliştirmek</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">C) Hizmet standardı geliştirmek</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">D) Hizmet standartlarını revize etmek</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">E) Akreditasyon ile ilgili sertifikasyon yayımlamak</li>
+        </ul>
+        <div class="solution" id="sol5">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) ISO belgesi vermek</strong></p>
+            <p>Kavramsal olarak çok yapılan bir hatadır: <strong>ISO standart geliştirir ve yayımlar, ancak asla "belge (sertifika) vermez".</strong> Bir firmanın ISO 9001 veya ISO 45001 sistemine sahip olduğunu tescilleyen belgeler, ISO'dan bağımsız olan "Akredite Belgelendirme Kuruluşları" (TSE, TÜV, BSI, SGS vb.) tarafından gerçekleştirilen denetimler sonucunda verilir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 6 -->
+    <div class="question-box" id="q6">
+        <div class="question-text">S6- Aşağıda verilenlerden hangisi Çevre yönetim sistemlerinin uygulama kılavuzunu ifade eder?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">A) ISO 14000</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">B) ISO 14001</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">C) ISO 14002</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">D) ISO 14003</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol6', 'q6')">E) ISO 14004</li>
+        </ul>
+        <div class="solution" id="sol6">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) ISO 14004</strong></p>
+            <p>ISO 14000 serisi çevre standartları ailesidir. <em>ISO 14001</em> şartları belirleyen (belgelendirmeye esas olan) temel standarttır. <strong>ISO 14004</strong> ise Çevre Yönetim Sistemleri için genel ilkeler, sistemler ve destekleyici teknikler hakkında bilgi veren <strong>Uygulama Kılavuzu</strong> standardıdır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 7 -->
+    <div class="question-box" id="q7">
+        <div class="question-text">S7- Bir kuruluşun, üst yönetimi tarafından resmi olarak beyan edilen, çevre performansıyla ilgili niyet ve yönlendirmeleri aşağıdaki kavramlardan hangisi ile ifade edilir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol7', 'q7')">A) Çevre politikası</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">B) Yönetim sistemi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">C) Çevre beklentileri</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">D) Proses Sistemi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">E) Çevre hedefleri</li>
+        </ul>
+        <div class="solution" id="sol7">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Çevre politikası</strong></p>
+            <p>Tüm ISO yönetim sistemlerinde (Kalite, Çevre, İSG) "Politika", üst yönetimin ilgili konudaki (çevre, kalite, İSG) taahhütlerini, genel niyetini, vizyonunu ve yönlendirmesini resmi olarak beyan ettiği temel belgedir. Hedefler bu politikaya bağlı olarak sonradan sayısal veya ölçülebilir olarak belirlenir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 8 -->
+    <div class="question-box" id="q8">
+        <div class="question-text">S8- ISO 45001:2018, İş sağlığı ve güvenliği yönetim sistemine göre kuruluşun kendi İSG politikası ve hedefleri dahil olmak üzere İSG yönetim sisteminin şartları; ISO 45001:2018 standardın şartlarının etkili bir şekilde uygulandığı ve sürekliliğinin sağlandığını belirlemek için kendi bünyesinde yaptığı çalışma aşağıdaki kavramlardan hangisi ile tanımlanır?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol8', 'q8')">A) Tetkik</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">B) Akreditasyon</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">C) Kalibrasyon</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">D) Belgelendirme</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">E) Standardizasyon</li>
+        </ul>
+        <div class="solution" id="sol8">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Tetkik</strong></p>
+            <p>Bir kuruluşun, kurduğu sistemin standart şartlarına ve kendi prosedürlerine uygun işleyip işlemediğini kontrol etmek amacıyla genellikle belirli periyotlarla, objektif ve bağımsız şekilde yürüttüğü inceleme faaliyetine <strong>İç Tetkik (Audit / Denetim)</strong> denir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 9 -->
+    <div class="question-box" id="q9">
+        <div class="question-text">S9- Olumsuz çevresel etkileri azaltmak amacıyla, herhangi bir kirleticinin veya atığın oluşmasını, emisyonunu veya boşaltımını önlemek, azaltmak veya kontrol etmek (ayrı ayrı veya birlikte) için, proseslerin uygulamaların, tekniklerin, malzemelerin, ürünlerin, hizmetlerin veya enerjinin kullanılması faaliyeti aşağıdaki kavramlardan hangisi ile ifade edilir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">A) Çevre politikası</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">B) Çevre hedefleri</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">C) Çevre boyutu</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">D) Çevresel risk</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol9', 'q9')">E) Kirliliğin önlenmesi</li>
+        </ul>
+        <div class="solution" id="sol9">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Kirliliğin önlenmesi</strong></p>
+            <p>ISO 14001 terminolojisinde (Madde 3); atıkların, emisyonların veya olumsuz çevresel unsurların kaynağında engellenmesi, azaltılması, ikame edilmesi veya kontrol altına alınması için geliştirilen her türlü teknolojik veya süreçsel iyileştirme <strong>"Kirliliğin önlenmesi"</strong> (Prevention of pollution) kavramıyla tanımlanır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 10 -->
+    <div class="question-box" id="q10">
+        <div class="question-text">S10- Bir ürün veya hizmetin; hammaddeden alımından veya doğal kaynaktan üretiminden, nihai bertarafına kadar olan ardarda ve birbiri ile bağlantılı aşamaları, aşağıdaki kavramlardan hangisi ile ifade edilir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">A) Sistem döngüsü</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">B) Deming döngüsü</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol10', 'q10')">C) Yaşam döngüsü</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">D) Proses döngüsü</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">E) Tasarım döngüsü</li>
+        </ul>
+        <div class="solution" id="sol10">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Yaşam döngüsü</strong></p>
+            <p>Ürün veya hizmetin doğadan ham madde olarak temin edilmesinden başlayıp; tasarım, üretim, nakliye, kullanım süreci ve nihayetinde ömrünü tamamlayıp atık (bertaraf) olarak doğaya dönmesine kadar geçen süreçlerin bütününe literatürde ve ISO standartlarında (Life Cycle) <strong>Yaşam Döngüsü</strong> denir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 11 -->
+    <div class="question-box" id="q11">
+        <div class="question-text">S11- Ölçüm cihazları ile elde edilen sonuçların doğruluğundan emin olmak için cihaz ile ilgili aşağıda verilen işlemlerden hangisinin yapılması gerekir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol11', 'q11')">A) Kalibrasyon</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">B) Akreditasyon</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">C) Ayarlama</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">D) Tetkik</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">E) Birden fazla doğrulama</li>
+        </ul>
+        <div class="solution" id="sol11">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Kalibrasyon</strong></p>
+            <p>Ölçüm aletlerinin, daha hassas olduğu ve doğruluğu (izlenebilirliği) kanıtlanmış referans standart ölçüm cihazları ile karşılaştırılarak sapma miktarının belirlenmesi ve belgelenmesi işlemine <strong>Kalibrasyon</strong> denir. Yönetim sistemlerinde izlenebilir ölçüm sonuçları için yegane şart cihazların periyodik kalibrasyonudur.</p>
+        </div>
+    </div>
+
+    <!-- Soru 12 -->
+    <div class="question-box" id="q12">
+        <div class="question-text">S12- Bir uygunsuzluğun kaynağını ortadan kaldırmak ve tekrar oluşmasını önlemek için yapılacak faaliyet aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">A) Sürekli iyileştirme</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">B) Proaktif yaklaşım</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">C) Önleyici faaliyet</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol12', 'q12')">D) Düzeltici faaliyet</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">E) PUKÖ döngüsü</li>
+        </ul>
+        <div class="solution" id="sol12">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Düzeltici faaliyet</strong></p>
+            <p>Var olan (meydana gelmiş) bir uygunsuzluğun ya da olayın "kök nedenini" bularak bir daha tekrarlanmamasını sağlamak amacıyla alınan kalıcı aksiyonlara <strong>Düzeltici Faaliyet</strong> (Corrective Action) denir. <em>Önleyici faaliyet</em> ise, sorun henüz ortaya çıkmadan önce potansiyel riskleri görüp engellemek için yapılır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 13 -->
+    <div class="question-box" id="q13">
+        <div class="question-text">S13- ISO 45001 İSG Yönetim Sistemi, Annex SL yaklaşımı dikkate alınarak aşağıda verilen standartlardan hangileri ile uyumlu hale getirilmiştir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol13', 'q13')">A) ISO 9001:2015 ve ISO 14001:2015</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">B) ISO 9001:2015 ve OHSAS 18001:2007</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">C) OHSAS 18001:2007 ve ISO 14001:2015</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">D) OHSAS 18001:2007 ve ISO 50001</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">E) ISO 9001:2015 ve Ülkelerin Yasal Mevzuatları ile</li>
+        </ul>
+        <div class="solution" id="sol13">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) ISO 9001:2015 ve ISO 14001:2015</strong></p>
+            <p>Annex SL (Yeni adıyla Yüksek Seviye Yapı - HLS), tüm ISO yönetim sistemi standartlarının madde yapılarını 10 ana maddede standartlaştıran formattır. OHSAS 18001 (eski İSG standardı) iptal edilerek ISO 45001'e dönüştürülürken bu yapı benimsenmiştir. Bu sayede güncel Annex SL yapısını kullanan <strong>ISO 9001:2015 (Kalite) ve ISO 14001:2015 (Çevre)</strong> sistemleri ile ISO 45001 tam bir entegrasyon (uyum) sağlamıştır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 14 -->
+    <div class="question-box" id="q14">
+        <div class="question-text">S14- Avrupa Standardizasyon Komitesi tarafından, 14 Eylül 2015 tarihinde kabul edilen standart aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">A) ISO 45001</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol14', 'q14')">B) ISO 9001</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">C) ISO 27001</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">D) ISO 9004</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">E) ISO 19011</li>
+        </ul>
+        <div class="solution" id="sol14">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) ISO 9001</strong></p>
+            <p>Modern yönetim sistemleri tarihinde Eylül 2015 büyük bir dönüm noktasıdır. Çünkü dünyada en çok uygulanan Kalite Yönetim Sistemi Standardı olan <strong>ISO 9001:2015</strong> ve onunla beraber Çevre Yönetim Sistemi Standardı (ISO 14001:2015) tam da bu tarihte (Eylül 2015) yayımlanarak yürürlüğe girmiş ve HLS (Yüksek Seviye Yapı) formatına geçilmiştir. (ISO 45001 ise Mart 2018'de yayımlanmıştır.)</p>
+        </div>
+    </div>
+
+    <!-- Soru 15 -->
+    <div class="question-box" id="q15">
+        <div class="question-text">S15- ISO 45001:2018 standardının Giriş bölümünde "Bir kuruluş, çalışanlarının ve kuruluşta herhangi bir nedenle bulunan herkesin (müşteri, tedarikçi, misafir, taraftar, stajyer vb.) sağlığını iyileştirmesi dahil sağlık ve güvenliğinden sorumludur" denilmektedir. Standartta belirtilen sağlık kavramı aşağıdakilerden hangisini kapsamaktadır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">A) Fiziksel Sağlık</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">B) Psikolojik Sağlık</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">C) Zihinsel Sağlık</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">D) Beden Sağlığı</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol15', 'q15')">E) Fiziksel, Psikolojik ve Zihinsel Sağlık</li>
+        </ul>
+        <div class="solution" id="sol15">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Fiziksel, Psikolojik ve Zihinsel Sağlık</strong></p>
+            <p>Geleneksel iş güvenliği (ve OHSAS 18001) daha çok bedensel/fiziksel yaralanmalara odaklanırken, modern iş sağlığı vizyonu olan ISO 45001, çalışanın sağlığını bütüncül (holistik) bir yaklaşımla ele alır. Bu bağlamda, Dünya Sağlık Örgütü (WHO) tanımına da uygun olarak sağlık; sadece kazasızlık hali değil; <strong>fiziksel, psikolojik ve zihinsel (mental)</strong> iyilik halinin tamamını kapsar.</p>
+        </div>
+    </div>
+
+    <!-- Soru 16 -->
+    <div class="question-box" id="q16">
+        <div class="question-text">S16- ISO 45001:2018, İş sağlığı ve güvenliği yönetim sistemine göre kuruluş, İSG yönetim sistemini şartlarını karşılamak ve tamamlanan faaliyetleri gerçekleştirmek için ihtiyaç duyulan prosesleri oluşturmalı, uygulamalı, kontrol etmeli ve sürekliliğini sağlamak için aşağıdakilerden hangisini yapmasına gerek yoktur?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">A) Prosesler için kriterleri oluşturarak</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">B) Kriterlere uygun şekilde, proseslerin kontrolünü yaparak</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">C) Süreçlerin planlandığı şekilde yürütüldüğünü güvence altına alarak ve sürekliliğini sağlayarak</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">D) İşleri çalışanlara uyarlayarak</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol16', 'q16')">E) Çalışanları sürekli kontrol ederek</li>
+        </ul>
+        <div class="solution" id="sol16">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Çalışanları sürekli kontrol ederek</strong></p>
+            <p>ISO 45001'in 8.1 "Operasyonel Planlama ve Kontrol" maddesine göre, sistem insanı değil, süreçleri (prosesleri) kontrol etmeyi hedefler. Kuruluş, çalışanların işe uymasını dayatmak veya tepelerinde "sürekli kontrol edici" bir yapı kurmak (E şıkkı) yerine, ergonomik tasarım ve İSG ruhu gereği tam tersine <strong>işleri (prosesleri ve ortamı) çalışanlara uyarlamak</strong> (D şıkkı) zorundadır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 17 -->
+    <div class="question-box" id="q17">
+        <div class="question-text">S17- ISO 45001:2018, İş sağlığı ve güvenliği yönetim sistemine göre kuruluşlar aşağıda verilen konulardan hangisinde planlama yapmak zorunda değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">A) Risk ve fırsatları ele almada</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol17', 'q17')">B) İş kazası ve meslek hastalıklarına</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">C) Yasal ve diğer şartların</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">D) Acil durumlara hazırlanmak ve ihtiyaç olduğunda gereğini yapmak yerine getirmede</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">E) İSG amaçları ve bunlara ulaşmada</li>
+        </ul>
+        <div class="solution" id="sol17">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) İş kazası ve meslek hastalıklarına</strong></p>
+            <p>ISO 45001'in 6. maddesi "Planlama" başlığını taşır. Bir kurum risk ve fırsatlar, uyulması gereken yasal şartlar, acil durumlara hazırlık ve İSG hedefleri konusunda "Planlama" yapmak zorundadır. Ancak <strong>İş kazası ve meslek hastalıkları</strong> planlanan şeyler değil, meydana gelmesi engellenmeye (önlenmeye) çalışılan olaylardır. Sistem kazayı planlamaz, onu önlemeyi planlar.</p>
+        </div>
+    </div>
+
+    <!-- Soru 18 -->
+    <div class="question-box" id="q18">
+        <div class="question-text">S18- Aşağıda verilen hangisi bir tetkik standardıdır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">A) ISO 50001</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol18', 'q18')">B) ISO 19011</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">C) ISO 14004</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">D) ISO 9004</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">E) ISO 14001</li>
+        </ul>
+        <div class="solution" id="sol18">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) ISO 19011</strong></p>
+            <p>Uluslararası standardizasyon terminolojisinde yönetim sistemlerinin denetlenmesi ve tetkiki üzerine rehberlik eden kılavuz standart <strong>ISO 19011 (Yönetim Sistemleri Tetkik Kılavuzu)</strong>'dir. Tetkikçiler/Denetçiler bu standarttaki metodolojiye göre eğitim alır ve denetim gerçekleştirir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 19 -->
+    <div class="question-box" id="q19">
+        <div class="question-text">S19- Bilgi teknolojileri hizmet yönetim sistemi standardı, bilgi teknolojileri hizmet sunan firmaların veya birimlerin uygulayacakları ISO standardı, aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">A) ISO 9001</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol19', 'q19')">B) ISO 20000-1</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">C) ISO 14001</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">D) ISO 50001</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">E) ISO 16949</li>
+        </ul>
+        <div class="solution" id="sol19">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) ISO 20000-1</strong></p>
+            <p>Özellikle IT (Bilgi Teknolojileri) sektöründe hizmet sunan servis sağlayıcılar, bilişim ve yazılım firmaları için hizmetin kesintisiz, güvenli ve kaliteli verilmesini amaçlayan uluslararası "Bilgi Teknolojileri Hizmet Yönetim Sistemi" standardı <strong>ISO/IEC 20000-1</strong> standardıdır. (ISO 27001 Bilgi güvenliği, 50001 Enerji, 16949 Otomotiv standartlarıdır).</p>
+        </div>
+    </div>
+
+    <!-- Soru 20 -->
+    <div class="question-box" id="q20">
+        <div class="question-text">S20- Edward Deming'e göre hataların % kaçı sistemden kaynaklanmaktadır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">A) 90</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">B) 10</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">C) 50</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol20', 'q20')">D) 94</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">E) 6</li>
+        </ul>
+        <div class="solution" id="sol20">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) 94</strong></p>
+            <p>Kalite yönetiminin öncülerinden olan ve Kalite (PUKÖ) döngüsünü kavramsallaştıran W. Edwards Deming, işletmelerdeki kalitesizlik, kaza veya hataların sorumluluğunun çalışana yıkılmasına karşı çıkmış; sorunların <strong>%94'ünün doğrudan sistemden (yönetimden)</strong>, ancak %6'sının işçiye bağlı "özel nedenlerden" kaynaklandığını bilimsel olarak ileri sürmüştür.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>hazırlayan Sıraç AKSAN</strong></p>
+    </div>
+</div>
+
+</body>
+</html>

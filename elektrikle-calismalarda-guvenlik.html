@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elektrikle Çalışmalarda Güvenlik | Çözümlü Sorular</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-bg: #d4edda;
+            --success-border: #c3e6cb;
+            --success-text: #155724;
+            --error-bg: #f8d7da;
+            --error-border: #f5c6cb;
+            --error-text: #721c24;
+            --bg-color: #f4f7f6;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg-color); 
+            color: #333; 
+            line-height: 1.6; 
+            padding: 20px; 
+            margin: 0;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .home-link {
+            text-decoration: none;
+            color: #fff;
+            background-color: var(--secondary-color);
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .home-link:hover { background-color: #2980b9; }
+        .header-titles { text-align: right; }
+        h1 { color: var(--primary-color); margin: 0; font-size: 1.5em; }
+        h1 small { display: block; font-size: 0.65em; color: #7f8c8d; margin-top: 5px; font-weight: normal; }
+        
+        .question-box { 
+            margin-bottom: 40px; 
+            padding: 25px; 
+            border: 1px solid #eaeaea; 
+            border-radius: 10px; 
+            background-color: #fafbfc; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03); 
+        }
+        .question-text { 
+            font-weight: 600; 
+            font-size: 1.1em; 
+            margin-bottom: 20px; 
+        }
+        .options { list-style-type: none; padding: 0; margin: 0; }
+        .option { 
+            margin: 10px 0; 
+            padding: 12px 15px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            background-color: #fff; 
+            font-size: 1.05em; 
+        }
+        .option:hover { background-color: #f1f1f1; border-color: #ccc; }
+        
+        .option.correct { 
+            background-color: var(--success-bg) !important; 
+            border-color: var(--success-border) !important; 
+            color: var(--success-text) !important; 
+            font-weight: bold; 
+        }
+        .option.wrong { 
+            background-color: var(--error-bg) !important; 
+            border-color: var(--error-border) !important; 
+            color: var(--error-text) !important; 
+            text-decoration: line-through; 
+        }
+        .disabled { pointer-events: none; }
+        
+        .solution { 
+            display: none; 
+            margin-top: 20px; 
+            padding: 20px; 
+            background-color: #eaf4fb; 
+            border-left: 6px solid var(--secondary-color); 
+            border-radius: 6px; 
+            animation: fadeIn 0.5s; 
+        }
+        .solution h4 { margin-top: 0; margin-bottom: 12px; color: #2980b9; font-size: 1.15em; }
+        .solution p { margin: 0 0 10px 0; }
+        .solution p:last-child { margin-bottom: 0; }
+        
+        .footer { 
+            text-align: center; 
+            margin-top: 50px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            font-size: 1.1em; 
+            color: #7f8c8d; 
+        }
+        .footer strong { color: var(--primary-color); }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(-5px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* Çizimler için SVG Sınıfları */
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .wire { stroke: black; stroke-width: 2; fill: none; }
+        .resistor { stroke: black; stroke-width: 2; fill: none; stroke-linejoin: bevel; }
+        .svg-text { font-family: 'Segoe UI', sans-serif; font-size: 14px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-top">
+        <a href="index.html" class="home-link">🏠 Ana Sayfa</a>
+        <div class="header-titles">
+            <h1>ELEKTRİKLE ÇALIŞMALARDA GÜVENLİK<br><small>2025-2026 BAHAR/FİNAL – B</small></h1>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(btn, isCorrect, solutionId, questionId) {
+            const options = document.querySelectorAll('#' + questionId + ' .option');
+            
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                if (opt.dataset.correct === 'true') {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            if (!isCorrect) {
+                btn.classList.add('wrong');
+            }
+            
+            const solDiv = document.getElementById(solutionId);
+            solDiv.style.display = 'block';
+        }
+    </script>
+
+    <!-- Soru 1 -->
+    <div class="question-box" id="q1">
+        <div class="question-text">S1- Elektrikli makine ve araçların metal gövde kısımlarının nötr iletkenine bağlanması şeklinde alınan koruma önlemi aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">A) Harici yalıtım</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">B) Topraklama</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">C) Kompanzasyon</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">D) Küçük gerilim kullanma</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol1', 'q1')">E) Sıfırlama</li>
+        </ul>
+        <div class="solution" id="sol1">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Sıfırlama</strong></p>
+            <p>Elektrikli cihazların normalde gerilim altında olmayan metal gövdelerinin, şebekenin <strong>nötr hattına</strong> (iletkenine) doğrudan bağlanması işlemine "Sıfırlama" denir. Eğer bu metal gövde doğrudan toprağa bağlansaydı buna "Koruma Topraklaması" denirdi. Günümüzde nötr hattının kopması durumunda gövdede tehlikeli gerilim oluşma riski nedeniyle sıfırlama yerine koruma topraklaması (PE) tercih edilmektedir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 2 -->
+    <div class="question-box" id="q2">
+        <div class="question-text">S2- Elektrik Tesislerinde Topraklamalar Yönetmeliği’ne göre, aşağıdaki şekil hangi topraklama sınıfına aittir?</div>
+        
+        <!-- Orijinal Çizim (TT Sistemi) -->
+        <div class="svg-container">
+            <svg width="400" height="260" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+                <!-- Şebeke Hatları -->
+                <line x1="50" y1="40" x2="350" y2="40" class="wire"/>
+                <text x="20" y="45" class="svg-text">L1</text>
+                <circle cx="50" cy="40" r="3" fill="white" stroke="black"/>
+
+                <line x1="50" y1="70" x2="350" y2="70" class="wire"/>
+                <text x="20" y="75" class="svg-text">L2</text>
+                <circle cx="50" cy="70" r="3" fill="white" stroke="black"/>
+
+                <line x1="50" y1="100" x2="350" y2="100" class="wire"/>
+                <text x="20" y="105" class="svg-text">L3</text>
+                <circle cx="50" cy="100" r="3" fill="white" stroke="black"/>
+
+                <line x1="50" y1="130" x2="350" y2="130" class="wire"/>
+                <text x="20" y="135" class="svg-text">N</text>
+                <circle cx="50" cy="130" r="3" fill="white" stroke="black"/>
+
+                <!-- Kaynak (Nötr) Topraklaması -->
+                <line x1="80" y1="130" x2="80" y2="210" class="wire"/>
+                <circle cx="80" cy="130" r="3" fill="black"/>
+                <line x1="65" y1="210" x2="95" y2="210" class="wire"/>
+                <line x1="72" y1="215" x2="88" y2="215" class="wire"/>
+                <line x1="78" y1="220" x2="82" y2="220" class="wire"/>
+
+                <!-- Cihaz Gövdesi -->
+                <rect x="150" y="180" width="100" height="40" fill="none" stroke="black" stroke-width="2" stroke-dasharray="5,5"/>
+                <text x="175" y="205" class="svg-text">Gövde</text>
+
+                <!-- Gövdeye Bağlantılar -->
+                <line x1="160" y1="40" x2="160" y2="180" class="wire"/>
+                <circle cx="160" cy="40" r="3" fill="black"/>
+
+                <line x1="180" y1="70" x2="180" y2="180" class="wire"/>
+                <circle cx="180" cy="70" r="3" fill="black"/>
+
+                <line x1="200" y1="100" x2="200" y2="180" class="wire"/>
+                <circle cx="200" cy="100" r="3" fill="black"/>
+
+                <line x1="220" y1="130" x2="220" y2="180" class="wire"/>
+                <circle cx="220" cy="130" r="3" fill="black"/>
+
+                <!-- Koruma (PE) Topraklaması (Gövdeden Bağımsız Toprağa) -->
+                <line x1="240" y1="180" x2="240" y2="140" class="wire"/>
+                <line x1="240" y1="140" x2="280" y2="140" class="wire"/>
+                <line x1="280" y1="140" x2="280" y2="210" class="wire"/>
+                <text x="285" y="135" class="svg-text">PE</text>
+
+                <line x1="265" y1="210" x2="295" y2="210" class="wire"/>
+                <line x1="272" y1="215" x2="288" y2="215" class="wire"/>
+                <line x1="278" y1="220" x2="282" y2="220" class="wire"/>
+            </svg>
+        </div>
+
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">A) TN sistemi</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol2', 'q2')">B) TT sistemi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">C) IT sistemi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">D) Kısa devre sistemi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">E) Faz nötr sistemi</li>
+        </ul>
+        <div class="solution" id="sol2">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) TT sistemi</strong></p>
+            <p>Şekil incelendiğinde; kaynağın yıldız noktasının (Nötr hattının) sol tarafta doğrudan toprağa bağlandığı görülür (İlk harf: <strong>T</strong>erre/Toprak). Cihazın (Gövdenin) koruma iletkeni (PE) ise şebeke nötründen tamamen bağımsız olarak, kendi ayrı elektrodu üzerinden topraklanmıştır (İkinci harf: <strong>T</strong>erre/Toprak). Bu nedenle bağımsız iki topraklamanın olduğu bu yapı <strong>TT Sistemi</strong>dir. (TN sisteminde gövde topraklaması şebeke nötr/PE hattı ile birleşiktir).</p>
+        </div>
+    </div>
+
+    <!-- Soru 3 -->
+    <div class="question-box" id="q3">
+        <div class="question-text">S3- Elektrik Kuvvetli Akım Tesisleri Yönetmeliği’nde, “Yerel koşullar nedeniyle belli yerlerde üretilebilen ve ağ şebeke ile en üst düzeyde toplanan enerjiyi tüketicinin yakınına ileten kablo ve/veya hava hattı şebekeleridir.” şeklindeki tanımlama, aşağıdaki ifadelerden hangisine aittir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol3', 'q3')">A) İletim şebekesi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">B) Dağıtım şebekesi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">C) Üretim şebekesi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">D) Santral</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">E) Küçük gerilim</li>
+        </ul>
+        <div class="solution" id="sol3">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) İletim şebekesi</strong></p>
+            <p>Elektrik enerjisinin çok uzak mesafelerde bulunan üretim santrallerinden, büyük tüketim merkezlerinin (şehirlerin vb.) yakınına kadar çok yüksek gerilimlerle taşınmasını sağlayan hatlara <strong>İletim Şebekesi</strong> denir. İletim şebekesinin bittiği noktadan (şalt sahalarından) sokaklara ve evlere kadar olan kısımlar ise <em>Dağıtım Şebekesi</em> olarak adlandırılır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 4 -->
+    <div class="question-box" id="q4">
+        <div class="question-text">S4- Elektrik devrelerinde, elektrik enerjisi depolamak için kullanılabilecek devre elemanlarından birisi aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">A) Röle</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">B) Anahtar</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">C) Sigorta</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">D) Direnç</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol4', 'q4')">E) Kondansatör</li>
+        </ul>
+        <div class="solution" id="sol4">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Kondansatör</strong></p>
+            <p>İki iletken plaka arasına yalıtkan (dielektrik) bir madde konularak elde edilen ve elektrik yükünü (enerjiyi) elektrik alanı içerisinde kısa süreliğine depolayabilme yeteneğine sahip devre elemanına <strong>Kondansatör</strong> (Kapasitör) denir. Devrede gerilim dalgalanmalarını filtrelemek veya güç katsayısını (kompanzasyon) düzeltmek için sıkça kullanılır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 5 -->
+    <div class="question-box" id="q5">
+        <div class="question-text">S5- Elektrik Tesislerinde Topraklamalar Yönetmeliği’ne göre, sanayi tesisleri ticaret merkezleri için topraklamalara ilişkin dirençlerinin muayene ve ölçülmesine ilişkin önerilen periyod aşağıdaki seçeneklerin hangisinde verilmiştir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">A) 6 ay</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol5', 'q5')">B) 1 yıl</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">C) 18 ay</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">D) 2 yıl</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">E) 5 yıl</li>
+        </ul>
+        <div class="solution" id="sol5">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) 1 yıl</strong></p>
+            <p>Topraklama tesisatlarının periyodik kontrol ve ölçüm süreleri yönetmeliğin Ek-P bölümünde belirtilmiştir. Elektrik üretim, iletim, dağıtım tesisleri ile sanayi tesisleri ve ticaret merkezleri için topraklama ölçüm periyodu <strong>en fazla 1 yıl</strong> olarak belirlenmiştir. (Yer değiştirebilen işletme elemanları için bu süre 6 aydır).</p>
+        </div>
+    </div>
+
+    <!-- Soru 6 -->
+    <div class="question-box" id="q6">
+        <div class="question-text">S6- Elektrik şebekelerinin bakım, onarım, yenileme işlerine başlamadan önce, bu şebekelerden beslenen tüketicilerde ................. bağlı olup olmadığı araştırılmalı, ................. olup olmadığı tespit edilmelidir. Cümleyi tamamlamak için aşağıdakilerden en uygunu hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">A) Cihaz - jeneratör</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">B) Trafo - yük</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">C) Gerilim - akım</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">D) Parafudr - paratoner</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol6', 'q6')">E) Jeneratör - ters besleme</li>
+        </ul>
+        <div class="solution" id="sol6">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Jeneratör - ters besleme</strong></p>
+            <p>Elektrik şebekesinde bakım yapacak ekipler ana hattan enerjiyi kesseler bile, hatta bağlı olan bir tüketicinin (fabrika, bina) <strong>jeneratörü</strong> çalışıp arızalı/yanlış bağlanmış bir transfer panosu yüzünden şebekeye doğru enerji basabilir. Bu ölümcül duruma <strong>ters besleme (geri besleme)</strong> denir ve bakım öncesi mutlaka güvenlik için teyit edilmelidir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 7 -->
+    <div class="question-box" id="q7">
+        <div class="question-text">S7- Ülkemizde kullanılan şebeke geriliminin frekansı aşağıdaki seçeneklerin hangisinde doğru olarak verilmiştir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">A) 60 Hz</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">B) 220 V</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol7', 'q7')">C) 50 Hz</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">D) 20 mili saniye</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">E) 1 GHz</li>
+        </ul>
+        <div class="solution" id="sol7">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) 50 Hz</strong></p>
+            <p>Alternatif akımda (AC) akımın saniyedeki yön değiştirme sayısına frekans denir. Ülkemizde ve Avrupa'nın genelinde şebeke gerilim frekansı standart olarak <strong>50 Hz</strong>'dir (Hertz). 220 V gerilim şiddetini, 20 milisaniye ise 50 Hz'lik bir sinyalin periyodunu ifade eder.</p>
+        </div>
+    </div>
+
+    <!-- Soru 8 -->
+    <div class="question-box" id="q8">
+        <div class="question-text">S8- <br>I. Akımın etki süresi<br>II. Akımın vücutta izlediği yol<br>III. DC gerilimin frekansı<br>Yukarıda belirtilen ifadelerden hangisi veya hangileri, elektrik akımının insan vücudu üzerinde oluşturacağı hasarda etkili faktörler arasında yer alır?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol8', 'q8')">A) I ve II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">B) I ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">C) I, II ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">D) II ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">E) Yalnız II</li>
+        </ul>
+        <div class="solution" id="sol8">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) I ve II</strong></p>
+            <p>Elektrik çarpmasının insana vereceği zararı belirleyen faktörler; akımın büyüklüğü (şiddeti), <strong>vücuttan geçiş süresi</strong>, akımın cinsi (AC/DC) ve akımın <strong>vücutta izlediği yoldur</strong> (hayati organlardan geçişi). "DC gerilimin frekansı" fiziksel olarak hatalı bir ifadedir çünkü Doğru Akımın (DC) frekansı sıfırdır; frekans değişkeni AC (Alternatif Akım) için geçerlidir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 9 -->
+    <div class="question-box" id="q9">
+        <div class="question-text">S9- Elektrik Kuvvetli Akım Tesisleri Yönetmeliği’ne göre, Hattın izin verilen en yüksek sürekli işletme geriliminin 33 kV olması durumunda, hava hattı iletkenlerinin en büyük salınımlı durumda yapılara olan en küçük yatay uzaklıkları kaç metredir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">A) 5</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">B) 4</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">C) 3</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol9', 'q9')">D) 2</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">E) 1</li>
+        </ul>
+        <div class="solution" id="sol9">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) 2</strong></p>
+            <p>Elektrik Kuvvetli Akım Tesisleri Yönetmeliği Çizelge 8 gereğince; enerji nakil hatlarının rüzgâr gibi etkenlerle "en büyük salınımlı (rüzgarlı/salınımlı) durumda" binalara ve yapılara yaklaşabileceği en küçük yatay mesafe, 1-36 kV (36 dâhil) gerilim aralığı için en az <strong>2 metre</strong> olmak zorundadır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 10 -->
+    <div class="question-box" id="q10">
+        <div class="question-text">S10- <br>I. Sıfırlama<br>II. Alternatif gerilim kullanma<br>III. Koruyucu yalıtma<br>Yukarıda verilen yöntemlerden hangisi/hangileri elektrikten korunma yöntemleri arasında yer almaz?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">A) I ve II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">B) Yalnız I</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">C) II ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">D) I ve III</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol10', 'q10')">E) Yalnız II</li>
+        </ul>
+        <div class="solution" id="sol10">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Yalnız II</strong></p>
+            <p>Elektrik akımından korunmak için kullanılan temel koruma tedbirleri; yalıtma (izolasyon), topraklama/sıfırlama, kaçak akım rölesi kullanma veya güvenli küçük gerilim kullanmaktır. <strong>Alternatif gerilim (AC) kullanmak</strong> bir korunma yöntemi değildir; aksine insan kalbinde fibrilasyon (ritim bozukluğu) yarattığı için eşdeğer gerilimdeki DC'ye kıyasla çok daha ölümcüldür.</p>
+        </div>
+    </div>
+
+    <!-- Soru 11 -->
+    <div class="question-box" id="q11">
+        <div class="question-text">S11- Elektrik Yüksek Gerilim Tesisleri İşletme Sorumlusu belgesi hangi kurum tarafından verilmektedir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol11', 'q11')">A) Elektrik Mühendisleri Odası</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">B) Türkiye Elektrik Dağıtım Anonim Şirketi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">C) Türkiye Elektrik İletim Anonim Şirketi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">D) Elektrik Üretim Anonim Şirketi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">E) Sanayi Bakanlığı</li>
+        </ul>
+        <div class="solution" id="sol11">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Elektrik Mühendisleri Odası</strong></p>
+            <p>Yüksek gerilim tesislerinin (trafo vb.) güvenli bir şekilde işletilmesi, manevraların yapılması ve periyodik bakımlarının gözetimi için zorunlu olan "YG Tesisleri İşletme Sorumlusu" belgelendirmesi ve yetkilendirmesi süreci, TMMOB bünyesindeki <strong>Elektrik Mühendisleri Odası (EMO)</strong> tarafından yürütülmektedir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 12 -->
+    <div class="question-box" id="q12">
+        <div class="question-text">S12- Kurşun ve asitli sabit akümülatör tesislerine ilişkin olarak, aşağıda verilenlerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">A) Akümülatörlerin bulunduğu yerler tercihen doğal havalandırmanın yeterli olabileceği biçimde yapılmalıdır.</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol12', 'q12')">B) Anahtar, priz vs. gibi alevlenmeye sebep olabilecek kıvılcım çıkaran elektrik araçları akü odalarının içine konulmalıdır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">C) Kurşun - asitli akümülatör odalarındaki elektrik tesisleri için nemli ve benzeri yerlere ilişkin iletken, kablo ve elektrik işletme gereçleri kullanılmalıdır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">D) Kapılar, pencere çerçeveleri, duvarlar, tavanlar akümülatör yerleştirilen döşeme ve düzlükler elektrolit etkisine karşı dayanıklı olmalıdır.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">E) Kurşun - asitli akümülatör odalarında kapılar ve pencereler dışarıya doğru açılmalıdır.</li>
+        </ul>
+        <div class="solution" id="sol12">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) Anahtar, priz vs. gibi alevlenmeye sebep olabilecek kıvılcım çıkaran elektrik araçları akü odalarının içine konulmalıdır.</strong></p>
+            <p>Kurşun-asit aküler şarj olurken ortama yüksek derecede yanıcı ve patlayıcı hidrojen gazı salarlar. Bu nedenle aydınlatma anahtarı, priz, şalter gibi açıp kapatırken veya fiş takarken ark (kıvılcım) çıkaran her türlü standart elektrik teçhizatının akü odalarının <strong>içine konulması KESİNLİKLE YASAKTIR</strong>; bu ekipmanlar odanın dışına tesis edilmelidir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 13 -->
+    <div class="question-box" id="q13">
+        <div class="question-text">S13- <br>I – Yapıların iç aydınlatma<br>II – Şantiyeler<br>III – Telefon<br>Yukarıdaki tesislerden hangisi/hangileri Elektrik İç Tesisleri Yönetmeliği’ne göre geçici elektrik tesisi olarak tanımlanmaktadır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">A) I, II ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">B) Yalnız III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">C) I ve II</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol13', 'q13')">D) Yalnız II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">E) I ve III</li>
+        </ul>
+        <div class="solution" id="sol13">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Yalnız II</strong></p>
+            <p>Binaların iç aydınlatma tesisatı, priz tesisatı veya zayıf akım (telefon, internet) hatları bina ömrü boyunca kullanılacak olan sabit tesislerdir. Ancak <strong>Şantiyeler</strong> (inşaat sahaları), panayır yerleri, açık hava etkinlik alanları gibi iş bittikten sonra sökülecek olan elektrik kurulumları "Geçici Elektrik Tesisleri" statüsündedir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 14 -->
+    <div class="question-box" id="q14">
+        <div class="question-text">S14- Elektrik Tesislerinde Topraklamalar Yönetmeliğinde, “İnsanları tehlikeli dokunma gerilimlerine karşı korumak için, işletme akım devresinde bulunmayan iletken bir bölümün topraklanmasıdır.” ifadesi ile tanımlanan topraklama yöntemi aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">A) Fonksiyon topraklaması</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">B) Raylı sistem topraklaması</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">C) İşletme topraklaması</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol14', 'q14')">D) Koruma topraklaması</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">E) Yıldırıma karşı topraklama</li>
+        </ul>
+        <div class="solution" id="sol14">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Koruma topraklaması</strong></p>
+            <p>Elektrik motorları, çamaşır makineleri, panolar gibi normalde elektrik akımı taşımayan ancak bir yalıtım hatası sonucunda (kısa devre, kaçak vb.) tehlikeli gerilim altında kalabilen metal/iletken gövdelerin toprağa bağlanması işlemine <strong>Koruma Topraklaması</strong> denir. İşletme topraklaması ise trafonun nötr noktasının topraklanmasıdır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 15 -->
+    <div class="question-box" id="q15">
+        <div class="question-text">S15- Birim zamanda, bir ışık kaynağından çıkan görünür ışık miktarı aşağıdaki ölçüm birimlerinden hangisi ile ifade edilir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">A) Lüks</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">B) Renk sıcaklığı</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol15', 'q15')">C) Lümen</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">D) Akım</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">E) Dalga Boyu</li>
+        </ul>
+        <div class="solution" id="sol15">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Lümen</strong></p>
+            <p>Bir lambanın veya ışık kaynağının her yöne yaydığı toplam "Işık Akısı" (görünür ışık gücü) birimine <strong>Lümen (lm)</strong> denir. Bu kaynaktan çıkıp bir çalışma yüzeyine (masaya) düşen ışık miktarına (Aydınlık Şiddeti) ise <em>Lüks</em> adı verilir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 16 -->
+    <div class="question-box" id="q16">
+        <div class="question-text">S16- Aşağıdaki devrede R₆= 4 Ohm direnci üzerinden geçen akımın değerini hesaplayınız.</div>
+        
+        <!-- Orijinal Çizim (Elektrik Devresi) -->
+        <div class="svg-container">
+            <svg width="500" height="250" viewBox="0 0 500 250" xmlns="http://www.w3.org/2000/svg">
+                <!-- Batarya Sembolü ve Alttaki Hat -->
+                <line class="wire" x1="50" y1="180" x2="120" y2="180"/>
+                <line class="wire" x1="120" y1="160" x2="120" y2="200"/>
+                <line class="wire" x1="130" y1="170" x2="130" y2="190"/>
+                <line class="wire" x1="130" y1="180" x2="300" y2="180"/>
+                <text class="svg-text" x="110" y="215">+</text>
+                <text class="svg-text" x="135" y="215">-</text>
+                <text class="svg-text" x="80" y="170">36 V</text>
+
+                <!-- R7 (Geri Dönüş Hattı Üzerinde) -->
+                <polyline class="resistor" points="300,180 305,170 315,190 325,170 335,190 345,170 355,190 365,170 375,190 380,180"/>
+                <line class="wire" x1="380" y1="180" x2="450" y2="180"/>
+                <text class="svg-text" x="320" y="160">R₇= 3 Ω</text>
+
+                <!-- Sol Kısım Hatları (Paralel 1. Blok İçin) -->
+                <line class="wire" x1="50" y1="180" x2="50" y2="60"/>
+                <line class="wire" x1="50" y1="60" x2="80" y2="60"/>
+                <line class="wire" x1="50" y1="100" x2="80" y2="100"/>
+                <line class="wire" x1="50" y1="140" x2="80" y2="140"/>
+                <line class="wire" x1="50" y1="60" x2="50" y2="140"/>
+
+                <!-- R1, R2, R3 (1. Paralel Blok) -->
+                <polyline class="resistor" points="80,60 85,50 95,70 105,50 115,70 125,50 135,70 145,50 150,60 250,60"/>
+                <text class="svg-text" x="100" y="45">R₁= 20 Ω</text>
+                
+                <polyline class="resistor" points="80,100 85,90 95,110 105,90 115,110 125,90 135,110 145,90 150,100 250,100"/>
+                <text class="svg-text" x="100" y="85">R₂= 30 Ω</text>
+                
+                <polyline class="resistor" points="80,140 85,130 95,150 105,130 115,150 125,130 135,150 145,130 150,140 250,140"/>
+                <text class="svg-text" x="100" y="125">R₃= 6 Ω</text>
+
+                <!-- 1. Bloğun Birleşimi ve 2. Bloğa Üstten Geçiş -->
+                <line class="wire" x1="250" y1="60" x2="250" y2="140"/>
+                <line class="wire" x1="250" y1="60" x2="450" y2="60"/>
+
+                <!-- R4, R5, R6 (2. Paralel Blok - Dikey Konumlandırma) -->
+                <line class="wire" x1="300" y1="60" x2="300" y2="80"/>
+                <polyline class="resistor" points="300,80 290,85 310,95 290,105 310,115 290,125 310,135 290,145 300,150 300,160"/>
+                <text class="svg-text" x="245" y="120">R₄= 8 Ω</text>
+
+                <line class="wire" x1="375" y1="60" x2="375" y2="80"/>
+                <polyline class="resistor" points="375,80 365,85 385,95 365,105 385,115 365,125 385,135 365,145 375,150 375,160"/>
+                <text class="svg-text" x="385" y="120">R₅= 8 Ω</text>
+
+                <line class="wire" x1="450" y1="60" x2="450" y2="80"/>
+                <polyline class="resistor" points="450,80 440,85 460,95 440,105 460,115 440,125 460,135 440,145 450,150 450,160"/>
+                <text class="svg-text" x="460" y="100">R₆= 4 Ω</text>
+
+                <!-- 2. Bloğun Alt Birleşimi ve Dönüş -->
+                <line class="wire" x1="300" y1="160" x2="450" y2="160"/>
+                <line class="wire" x1="450" y1="160" x2="450" y2="180"/>
+                <line class="wire" x1="300" y1="160" x2="300" y2="180"/>
+            </svg>
+        </div>
+
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">A) 1 A</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol16', 'q16')">B) 2 A</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">C) 4 A</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">D) 0,8 A</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">E) 1,2 A</li>
+        </ul>
+        <div class="solution" id="sol16">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) 2 A</strong></p>
+            <p>Devre analizini adım adım yapalım:</p>
+            <ol>
+                <li><strong>1. Paralel Blok (R₁, R₂, R₃):</strong><br>1/R<sub>eş1</sub> = (1/20) + (1/30) + (1/6) = (3/60) + (2/60) + (10/60) = 15/60 = 1/4 &rarr; <strong>R<sub>eş1</sub> = 4 Ω</strong></li>
+                <li><strong>2. Paralel Blok (R₄, R₅, R₆):</strong><br>1/R<sub>eş2</sub> = (1/8) + (1/8) + (1/4) = (1/8) + (1/8) + (2/8) = 4/8 = 1/2 &rarr; <strong>R<sub>eş2</sub> = 2 Ω</strong></li>
+                <li><strong>Toplam Eşdeğer Direnç:</strong><br>Devredeki seri haldeki bloklar ve R₇: R<sub>toplam</sub> = R<sub>eş1</sub> + R<sub>eş2</sub> + R₇ = 4 + 2 + 3 = <strong>9 Ω</strong></li>
+                <li><strong>Ana Kol Akımı (I):</strong><br>Ohm Kanunu (V = I x R) &rarr; 36V = I x 9Ω &rarr; <strong>I = 4 A</strong></li>
+                <li><strong>R₆ Üzerinden Geçen Akım:</strong><br>4 Amperlik ana kol akımı 2. Paralel bloğa (R<sub>eş2</sub>= 2 Ω) girdiğinde bu bloğun uçları arasındaki gerilim: V₂ = I x R<sub>eş2</sub> = 4A x 2Ω = <strong>8V</strong> olur.<br>Bu bloktaki R₆ (4 Ω) direnci üzerinden geçen akım: I₆ = V₂ / R₆ = 8V / 4Ω = <strong>2 Amper</strong> olarak bulunur.</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Soru 17 -->
+    <div class="question-box" id="q17">
+        <div class="question-text">S17- Düşük gerilimle çalışan elektrikli ve elektronik cihazları yıldırımdan korunmak amacıyla aşağıdaki aygıtlardan hangisi kullanılabilir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol17', 'q17')">A) Parafudr</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">B) Paratoner</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">C) Kaçak Akım Rölesi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">D) Sigorta</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">E) Termik Röle</li>
+        </ul>
+        <div class="solution" id="sol17">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Parafudr</strong></p>
+            <p>Binaları dışarıdan doğrudan yıldırım düşmesine karşı koruyan sistem "Paratoner" (Yıldırımsavar) sistemidir. Ancak yıldırımın enerji nakil hatlarına (şebekeye) düşmesiyle oluşan ani aşırı gerilim dalgalarının bina iç tesisatına girerek hassas elektrikli/elektronik cihazları yakmasını önleyen, bu yüksek enerjiyi toprağa deşarj eden pano içi koruma elemanı <strong>Parafudr (Aşırı Gerilim Sönümleyici - SPD)</strong> cihazlarıdır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 18 -->
+    <div class="question-box" id="q18">
+        <div class="question-text">S18- Bir direncin değerini ölçmek amacıyla kullanılan ölçü aleti aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">A) Ampermetre</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">B) Voltmetre</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol18', 'q18')">C) Ohmmetre</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">D) Wattmetre</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">E) Kalorimetre</li>
+        </ul>
+        <div class="solution" id="sol18">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Ohmmetre</strong></p>
+            <p>Elektriksel birimler ve ölçü aletleri birbirleriyle eşleşiktir. Elektrik akımına karşı gösterilen zorluk olan "Direnç" birimi Ohm (Ω) olduğu için bu değeri ölçen alete <strong>Ohmmetre</strong> denir. Akım Ampermetre ile, gerilim Voltmetre ile ölçülür.</p>
+        </div>
+    </div>
+
+    <!-- Soru 19 -->
+    <div class="question-box" id="q19">
+        <div class="question-text">S19- Elektrik İle İlgili Fen Adamlarının Yetki, Görev ve Sorumlulukları Hakkında Yönetmeliğe göre, 3. Grupta yer alan Fen adamları kaç KW bağlantı gücüne kadar olan binaların elektrik iç tesis yapım işlerinde yetkilidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol19', 'q19')">A) 16 KW (veya 30 KW)</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">B) 50 KW</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">C) 500 KW</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">D) 1000 KW</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">E) 1500 KW</li>
+        </ul>
+        <div class="solution" id="sol19">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) 16 KW</strong></p>
+            <p>Mevzuata göre Elektrik Fen Adamları 3 gruba ayrılır. Yapım işleri yetkilerinde 1. Grup (Yüksek tekniker/Tekniker) 50 kW'a kadar, 2. Grup (Meslek Lisesi vb.) 30 kW'a kadar, <strong>3. Grup (Ustalık belgesi vb. olanlar) ise 16 kW</strong> bağlantı gücüne kadar elektrik iç tesisat yapımında yetkilidir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 20 -->
+    <div class="question-box" id="q20">
+        <div class="question-text">S20- Elektrik tesisatında; can güvenliği ve yangından korunma için kullanılan kaçak akım rölelerinin, enerji kesme sınır değerleri aşağıdaki seçeneklerin hangisinde doğru olarak verilmiştir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">A) 10 A / 100 A</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">B) 30 mikro A / 300 mikro A</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol20', 'q20')">C) 30 mA / 300 mA</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">D) 50 mA / 500 mA</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">E) 300 mA / 30 A</li>
+        </ul>
+        <div class="solution" id="sol20">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) 30 mA / 300 mA</strong></p>
+            <p>Kaçak Akım Röleleri (Artık Akım Anahtarları) temel olarak iki standart koruma sınır değerinde (eşik akımında) imal edilirler. İnsanları elektrik çarpmasına karşı koruyan (Hayat Koruması/Can Güvenliği) modellerin açma sınırı <strong>30 mA (miliAmper)</strong>'dir. Yalıtım hatalarından doğacak ark ve ısınmaları önleyerek yapıyı koruyan (Yangın Koruma) ana giriş modellerinin ise açma sınırı <strong>300 mA</strong>'dir. Mikroamper veya normal Amper birimleri bu röleler için doğru değildir.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>hazırlayan Sıraç AKSAN</strong></p>
+    </div>
+</div>
+
+</body>
+</html>

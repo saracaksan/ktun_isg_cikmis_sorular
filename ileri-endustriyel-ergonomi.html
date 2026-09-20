@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İleri Endüstriyel Ergonomi | Çözümlü Sorular</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-bg: #d4edda;
+            --success-border: #c3e6cb;
+            --success-text: #155724;
+            --error-bg: #f8d7da;
+            --error-border: #f5c6cb;
+            --error-text: #721c24;
+            --bg-color: #f4f7f6;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg-color); 
+            color: #333; 
+            line-height: 1.6; 
+            padding: 20px; 
+            margin: 0;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .home-link {
+            text-decoration: none;
+            color: #fff;
+            background-color: var(--secondary-color);
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .home-link:hover { background-color: #2980b9; }
+        .header-titles { text-align: right; }
+        h1 { color: var(--primary-color); margin: 0; font-size: 1.6em; }
+        h1 small { display: block; font-size: 0.6em; color: #7f8c8d; margin-top: 5px; font-weight: normal; }
+        
+        .question-box { 
+            margin-bottom: 40px; 
+            padding: 25px; 
+            border: 1px solid #eaeaea; 
+            border-radius: 10px; 
+            background-color: #fafbfc; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03); 
+        }
+        .question-text { 
+            font-weight: 600; 
+            font-size: 1.1em; 
+            margin-bottom: 20px; 
+        }
+        .options { list-style-type: none; padding: 0; margin: 0; }
+        .option { 
+            margin: 10px 0; 
+            padding: 12px 15px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            background-color: #fff; 
+            font-size: 1.05em; 
+        }
+        .option:hover { background-color: #f1f1f1; border-color: #ccc; }
+        
+        /* Interactive Classes */
+        .option.correct { 
+            background-color: var(--success-bg) !important; 
+            border-color: var(--success-border) !important; 
+            color: var(--success-text) !important; 
+            font-weight: bold; 
+        }
+        .option.wrong { 
+            background-color: var(--error-bg) !important; 
+            border-color: var(--error-border) !important; 
+            color: var(--error-text) !important; 
+            text-decoration: line-through; 
+        }
+        .disabled { pointer-events: none; }
+        
+        .solution { 
+            display: none; 
+            margin-top: 20px; 
+            padding: 20px; 
+            background-color: #eaf4fb; 
+            border-left: 6px solid var(--secondary-color); 
+            border-radius: 6px; 
+            animation: fadeIn 0.5s; 
+        }
+        .solution h4 { margin-top: 0; margin-bottom: 12px; color: #2980b9; font-size: 1.15em; }
+        .solution p { margin: 0 0 10px 0; }
+        .solution p:last-child { margin-bottom: 0; }
+        
+        .footer { 
+            text-align: center; 
+            margin-top: 50px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            font-size: 1.1em; 
+            color: #7f8c8d; 
+        }
+        .footer strong { color: var(--primary-color); }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(-5px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-top">
+      <a href="index.html" class="home-link">🏠 Ana Sayfa</a>
+        <div class="header-titles">
+            <h1>İLERİ ENDÜSTRİYEL ERGONOMİ<br><small>2025-2026 BAHAR / BÜTÜNLEME-A</small></h1>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(btn, isCorrect, solutionId, questionId) {
+            const options = document.querySelectorAll('#' + questionId + ' .option');
+            
+            // Disable all options and show the correct one
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                if (opt.dataset.correct === 'true') {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            // Mark as wrong if clicked incorrectly
+            if (!isCorrect) {
+                btn.classList.add('wrong');
+            }
+            
+            // Reveal solution
+            const solDiv = document.getElementById(solutionId);
+            solDiv.style.display = 'block';
+        }
+    </script>
+
+    <!-- Soru 1 -->
+    <div class="question-box" id="q1">
+        <div class="question-text">S.1. Aşağıdakilerden hangisi, insana ilişkin fizyolojik bir özelliktir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">A) Yaş</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">B) Hastalık</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol1', 'q1')">C) Kuvvet</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">D) Dalgınlık</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">E) Cinsiyet</li>
+        </ul>
+        <div class="solution" id="sol1">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Kuvvet</strong></p>
+            <p>Ergonomide insanın özellikleri demografik, antropometrik, biyomekanik/fizyolojik ve psikolojik olarak sınıflandırılır. <strong>Yaş ve cinsiyet</strong> demografik/kişisel özelliklerdir. <strong>Dalgınlık</strong> psikolojik, <strong>hastalık</strong> ise patolojik bir durumdur. <strong>Kuvvet</strong> (kas gücü, dayanıklılık vb.) ise insanın fiziksel iş yapabilme kapasitesini belirleyen temel <em>fizyolojik/biyomekanik</em> özelliktir. Bu nedenle çeldirici olan yaş ve cinsiyet ifadeleri fizyolojik özellik sınıfından ziyade genel kişisel veri olarak kabul edilir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 2 -->
+    <div class="question-box" id="q2">
+        <div class="question-text">S.2. Ekranlı Araçlarla Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik’e göre, ekranlı araçlarla çalışmalarda operatörlerin gözlerinin korunması amacı ile yapılan göz muayeneleri için yukarıdakilerden hangisi/hangileri doğrudur?<br><br>
+        I- Ekranlı araçlarla çalışmaya başlamadan önce yapılır<br>
+        II- Risk değerlendirmesi sonuçlarına göre işyeri hekimince belirlenecek düzenli aralıklarla yapılır<br>
+        III- Ekranlı araçlarla çalışmadan kaynaklanabilecek görme zorlukları yaşandığında yapılır</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">A) Yalnız I</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">B) Yalnız II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">C) II ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">D) I ve II</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol2', 'q2')">E) I, II ve III</li>
+        </ul>
+        <div class="solution" id="sol2">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) I, II ve III</strong></p>
+            <p>İlgili yönetmeliğe göre çalışanların göz muayeneleri kesin kurallara bağlanmıştır. İşe başlamadan önce bir referans noktası olarak mutlaka yapılmalıdır (I). Çalışma süresince işyeri hekiminin risk durumuna göre belirleyeceği periyotlarda tekrarlanmalıdır (II). Ayrıca çalışan ekranlı araçtan kaynaklı bir görme zorluğu hissettiğinde muayene talep etme ve olma hakkına sahiptir (III). Çelişen bir ifade yoktur, üç durum da yasal gerekliliktir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 3 -->
+    <div class="question-box" id="q3">
+        <div class="question-text">S.3. Aşağıdakilerden hangisi, işyerlerindeki çalışma koşullarından dolayı ortaya çıkabilen ergonomik risklerden birisi değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">A) Karpal tünel sendromu</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">B) Disk kayması (bel fıtığı)</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">C) Tetik Parmak</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol3', 'q3')">D) Bisinozis</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">E) Beyaz Parmak</li>
+        </ul>
+        <div class="solution" id="sol3">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Bisinozis</strong></p>
+            <p>Karpal tünel, tetik parmak, beyaz parmak (Raynaud) ve bel fıtığı tamamen fiziksel zorlanma, yanlış postür, tekrarlayan hareket veya titreşim gibi <em>ergonomik</em> kökenli risklerdir. <strong>Bisinozis</strong> ise pamuk tozunun solunması sonucu akciğerlerde oluşan bir mesleki solunum yolu hastalığıdır (pnömokonyoz). Dolayısıyla ergonomik değil, havada asılı <em>toz (kimyasal/fiziksel kirlilik)</em> kaynaklıdır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 4 -->
+    <div class="question-box" id="q4">
+        <div class="question-text">S.4. Aşağıdakilerden hangisi, iş yerlerinde yorgunluğa neden olan faktörlerden birisi değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol4', 'q4')">A) Görev değişikliği</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">B) Monotonluk</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">C) Hastalık</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">D) Yetersiz Beslenme</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">E) Uykusuzluk</li>
+        </ul>
+        <div class="solution" id="sol4">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Görev değişikliği</strong></p>
+            <p>Yorgunluk, hem fiziksel hem zihinsel olarak tükenme durumudur. Monotonluk (tekdüzelik), hastalık, yetersiz beslenme ve uykusuzluk doğrudan yorgunluğu artırır. Ancak <strong>Görev değişikliği (İş Rotasyonu)</strong>, çalışanı aynı pozisyonda kalmaktan ve aynı kas grubunu sürekli kullanmaktan kurtarır. Bu kapsamda görev değişikliği yorgunluğu <em>artıran</em> değil, aksine azaltmaya yarayan ergonomik bir müdahaledir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 5 -->
+    <div class="question-box" id="q5">
+        <div class="question-text">S.5. İşten ayrılma tarihinden sonra yasa ile belirlenmiş olan belli bir süre içerisinde Meslek Hastalığı nedeni ile başvuru yapılırsa, meslek hastalıkları için tanımlanan yardımlardan yararlanılabilir. Yasa ile belirlenmiş olan bu süre aşağıdakilerden hangisinde doğru olarak verilmiştir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">A) Maruziyet süresi</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol5', 'q5')">B) Yükümlülük süresi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">C) Hastalık bildirim süresi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">D) Yasal takip süresi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">E) Sorumluluk süresi</li>
+        </ul>
+        <div class="solution" id="sol5">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) Yükümlülük süresi</strong></p>
+            <p>SGK mevzuatında çok karıştırılan iki kavram vardır: <strong>Maruziyet süresi</strong>, işçinin o hastalığa sebep olan işte fiilen geçirmesi gereken asgari çalışma süresidir. <strong>Yükümlülük süresi</strong> ise, işçinin o işten ayrıldıktan sonra hastalığın ortaya çıkması halinde meslek hastalığı sayılabilmesi için yasanın tanıdığı "en uzun" süredir. Soruda açıkça işten ayrıldıktan sonraki başvuru süresi sorulduğu için cevap yükümlülük süresidir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 6 -->
+    <div class="question-box" id="q6">
+        <div class="question-text">S.6. Meslek hastalıklarının temel özellikleri ile ilgili olarak aşağıdakilerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">A) Kendine özgü bir klinik tablosu vardır</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">B) Hastalık etkeni bellidir</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">C) Hastalığın nedeni iş/işyeri kaynaklı olup iş ile hastalık arasında nedensel bir bağ vardır</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">D) İşyerinde alınacak teknik ve tıbbi önlemlerle meslek hastalıklarından korunulabilinir</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol6', 'q6')">E) Bildirimi zorunlu değildir</li>
+        </ul>
+        <div class="solution" id="sol6">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Bildirimi zorunlu değildir</strong></p>
+            <p>Meslek hastalıkları iş yerindeki tehlikelerden kaynaklanan, önlenebilir nitelikte olan ve illiyet bağı aranan hastalıklardır. Yasal olarak SGK'ya bildirimleri <strong>kesinlikle zorunludur</strong>. İşverenler, meslek hastalığı tanısı konulduğunu öğrendikleri tarihten itibaren 3 iş günü içinde kuruma bildirim yapmakla mükelleftir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 7 -->
+    <div class="question-box" id="q7">
+        <div class="question-text">S.7. Molalar ile ilgili olarak aşağıda verilenlerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">A) Molanın ilk bölümünün dinlendirme değeri en büyüktür. Bu nedenle kısa molalar tercih edilmelidir</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">B) Molada başka bir yan iş yapılırsa, molanın değeri kaybolur</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol7', 'q7')">C) Molaların dinlendirme değeri mola süresi uzadıkça artar</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">D) Molaların sıklığı bedensel ve zihinsel çalışmanın ağırlığına bağlıdır. Çok ağır işlerde birkaç dakikalık çalışmadan sonra da mola vermek gerekebilir</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">E) Aşırı sıcak ve gürültülü ortamlardaki çalışmalarda verilen molalar, eğer mola bu ortamların dışında değerlendirilebiliyorsa yararlıdır</li>
+        </ul>
+        <div class="solution" id="sol7">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Molaların dinlendirme değeri mola süresi uzadıkça artar</strong></p>
+            <p>Çelişen ifade C şıkkıdır. Bilimsel ergonomi ilkelerine göre toparlanma (dinlenme) eğrisi logaritmiktir. Yani vücut mola başladığı ilk anlarda çok hızlı toparlanırken, mola uzadıkça birim zamanda elde edilen toparlanma (dinlendirme değeri) giderek azalır (marjinal fayda düşer). Bu yüzden günde bir kez uzun mola vermek yerine, sık ve kısa molalar vermek yorgunluğu atmak açısından çok daha etkilidir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 8 -->
+    <div class="question-box" id="q8">
+        <div class="question-text">S.8. Yukarıdakilerden hangisi/hangileri işyerlerinde sosyal ve yönetsel ortamdan kaynaklanan psikososyal risk etmeni olarak değerlendirilmektedir?<br><br>
+        I. Fazla çalışma süresi<br>
+        II. Düşük ücret<br>
+        III. Mobbing<br>
+        IV. Ayrımcılık, baskı ve taciz</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol8', 'q8')">A) Hepsi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">B) Yalnız IV</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">C) I ve II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">D) III ve IV</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">E) Yalnız III</li>
+        </ul>
+        <div class="solution" id="sol8">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Hepsi</strong></p>
+            <p>İşyerlerindeki psikososyal risk faktörleri sadece kişiler arası çatışmalardan ibaret değildir. İşin tasarımı ve yönetimi (fazla çalışma, yoğun iş yükü), ekonomik güvencesizlik (düşük ücret), işyerindeki sosyal ilişkiler (mobbing, taciz, ayrımcılık) bir bütün olarak zihinsel strese yol açan, sosyal ve yönetsel tabanlı psikososyal riskler kategorisindedir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 9 -->
+    <div class="question-box" id="q9">
+        <div class="question-text">S.9. Aşağıdakilerden hangisi Çalışma Gücü ve Meslekte Kazanma Gücü Kaybı Oranı Tespit İşlemleri Yönetmeliği’ne göre, meslek hastalıkları listesinde yer alan meslek hastalıkları gruplarından birisi değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">A) A Grubu: Kimyasal maddelerle olan meslek hastalıkları</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">B) B Grubu: Mesleki cilt hastalıkları</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">C) C Grubu: Pnömokonyozlar ve diğer mesleki solunum sistemi hastalıkları</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol9', 'q9')">D) D Grubu: Biyolojik etkenlerle olan meslek hastalıkları</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">E) E Grubu: Fizik etkenlerle olan meslek hastalıkları</li>
+        </ul>
+        <div class="solution" id="sol9">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) D Grubu: Biyolojik etkenlerle olan meslek hastalıkları</strong></p>
+            <p>Mevzuatımızda SGK hastalık listesi tanımlamalarında A (Kimyasal), B (Cilt), C (Solunum), D (Mesleki Bulaşıcı Hastalıklar) ve E (Fiziksel) şeklindedir. İfadelerde D grubu için genellikle "Biyolojik Etkenler" dense de yönetmelikteki resmi tanımlama <strong>"D Grubu: Mesleki Bulaşıcı Hastalıklar"</strong> şeklindedir. Soruda tam ifade arandığı için D şıkkındaki isimlendirme teknik olarak hatalıdır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 10 -->
+    <div class="question-box" id="q10">
+        <div class="question-text">S.10. Gemi söküm işinde çalışan işçi Ali, asbest tozlarına maruz kalmıştır. Emekli olduktan sonra başka bir işte çalışmayan ve bir müddet sonra rahatsızlanan ve asbestozis teşhisi konulan Ali’nin gemi söküm işyeri işvereninden tazminat talebinde bulunabilmesi için emekli olduktan sonra en fazla kaç yıl geçmiş olması gerekir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">A) 1 yıl</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">B) 2 Yıl</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">C) 5 yıl</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol10', 'q10')">D) 10 yıl</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">E) 15 yıl</li>
+        </ul>
+        <div class="solution" id="sol10">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) 10 yıl</strong></p>
+            <p>Toz solunmasıyla ortaya çıkan akciğer hastalıklarına Pnömokonyoz denir (Asbestozis, Silikozis vb.). Pnömokonyozlar bazen yıllar sonra bile belirti verebilen hastalıklardır. Bu nedenle yasa koyucu bu grup hastalıklar için <strong>yükümlülük süresini 10 yıl</strong> olarak belirlemiştir. Bu süre içinde dava/başvuru açılabilmektedir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 11 -->
+    <div class="question-box" id="q11">
+        <div class="question-text">S.11. Meslek hastalıklarının özellikleri ile ilgili olarak, yukarıdakilerden hangisi/hangileri doğrudur?<br><br>
+        I. Hastalığın etkeni işyerindeki bir faktördür<br>
+        II. Çalışanlarda en sık görülen sağlık sorunudur<br>
+        III. Çalışanın çalışma öyküsünün bilinmesi tanı koyulmasında önemlidir</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">A) Yalnız I</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">B) Yalnız II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">C) Yalnız III</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol11', 'q11')">D) I ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">E) I, II ve III</li>
+        </ul>
+        <div class="solution" id="sol11">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) I ve III</strong></p>
+            <p>Meslek hastalıklarının vazgeçilmez iki unsuru etkenin işyerinde olması ve tanı için mutlaka çalışma öyküsü (anamnez) gerekliliğidir. II. madde yanlıştır çünkü iş dünyasında en sık görülen sağlık sorunları "İş Kazaları" veya günlük genel sağlık problemleri olup, tanı koyulmuş spesifik meslek hastalıkları istatistiksel olarak daha az görülmektedir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 12 -->
+    <div class="question-box" id="q12">
+        <div class="question-text">S.12. Aşağıdakilerden hangisi, mesleki kan hastalıklarından birisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">A) Epikondilit</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol12', 'q12')">B) Malign lenfoma</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">C) Rubella</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">D) Lyme hastalığı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">E) Minamata</li>
+        </ul>
+        <div class="solution" id="sol12">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) Malign lenfoma</strong></p>
+            <p>Epikondilit bir kas-iskelet (dirsek) sorunudur. Minamata, Japonya'da görülen cıva maruziyetine bağlı nörolojik bir zehirlenmedir. Rubella (kızamıkçık) ve Lyme (kene kaynaklı) hastalıkları biyolojik bulaşıcı rahatsızlıklardır. Endüstride özellikle benzen ve türevleri gibi kimyasalların uzun süreli solunması kan ve kan yapıcı organlara zarar vererek <strong>Malign lenfoma</strong> veya lösemi gibi hematolojik hastalıklara yol açar.</p>
+        </div>
+    </div>
+
+    <!-- Soru 13 -->
+    <div class="question-box" id="q13">
+        <div class="question-text">S.13. Ekranlı Araçlarla Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkındaki Yönetmelik’e göre, aşağıdakilerden hangisi ekranlı araçlarla ilgili çalışma merkezlerinde operatörün çalışma alanında bulunması gereken unsurlardan birisi değildir.</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">A) Masa-iskelet</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">B) Klavye</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">C) Monitör</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol13', 'q13')">D) Lazer ışını</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">E) Operatör/çalışan-makine ara yüz yazılımı</li>
+        </ul>
+        <div class="solution" id="sol13">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Lazer ışını</strong></p>
+            <p>Ekranlı araç çalışma merkezleri (bilgisayar donanımlı masalar); monitör, klavye, fare, masa, sandalye (iskelet) ve çalışanın işini yaptığı donanım ile iletişim kurduğu yazılım ara yüzünü (makine ara yüzü) kapsar. Lazer ışını bu kapsamda ofis veya genel ekranlı araç donanımı unsuru değildir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 14 -->
+    <div class="question-box" id="q14">
+        <div class="question-text">S.14. Elle Taşıma İşleri Yönetmeliği’ne göre; yukarıdakilerden hangisi/hangileri, çalışanlarda sırt ve bel incinme riski oluşturabilir?<br><br>
+        I. Aşırı kaldırma, indirme veya taşıma mesafelerinin olması<br>
+        II. Üzerinde durulan yerin dengesiz olması<br>
+        III. Yetersiz ara verme ve dinlenme süresinin olması</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">A) Yalnız I</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">B) I ve II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">C) I ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">D) II ve III</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol14', 'q14')">E) I, II ve III</li>
+        </ul>
+        <div class="solution" id="sol14">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) I, II ve III</strong></p>
+            <p>Elle taşıma işlemlerinde yükün kendisi, çalışma ortamı ve işin gereklilikleri bel incinmesini etkiler. Taşınacak mesafenin uzunluğu (fiziksel yorgunluk), zeminin dengesiz olması (ani zorlanma ve kayma) ile dinlenmeye ayrılan sürenin yetersizliği (toparlanamama) doğrudan sırta ve bele binecek yük hasarı olasılığını ciddi oranda artırır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 15 -->
+    <div class="question-box" id="q15">
+        <div class="question-text">S.15. Aşağıdakilerden hangisi kas-iskelet sistemi rahatsızlıklarından birisi değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">A) De Quervian Tenosinoviti</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">B) Rotator Cuff</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol15', 'q15')">C) Antrakozis</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">D) Cubital Tünel Sendromu</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">E) Torasik Outlet Sendromu</li>
+        </ul>
+        <div class="solution" id="sol15">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Antrakozis</strong></p>
+            <p>Diğer şıklardaki rahatsızlıkların tamamı ergonomik olmayan postürlerden, tekrarlayan hareketlerden doğan kas, tendon veya sinir sıkışması rahatsızlıklarıdır. <strong>Antrakozis</strong> ise uzun yıllar kömür tozu soluyan madencilerde görülen bir akciğer (solunum sistemi) hastalığıdır, kas-iskelet hastalığı değildir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 16 -->
+    <div class="question-box" id="q16">
+        <div class="question-text">S.16. Elle Taşıma İşleri Yönetmeliği’ne göre, yükle ilgili aşağıdaki risk faktörlerinden hangisi özellikle sırt ve bel incinmesi riskini artırabilecek çalışma ortamının özellikleri ile ilgili bir risk faktörüdür?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">A) Aşırı kaldırma, indirme veya taşıma mesafeleri</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol16', 'q16')">B) Zemin veya üzerinde durulan yerin dengesiz olması</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">C) Yetersiz ara ve dinlenme süresi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">D) İşin gerektirdiği, çalışan tarafından değiştirilemeyen çalışma temposu</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">E) İşin, yükün ani hareketi ile sonuçlanması</li>
+        </ul>
+        <div class="solution" id="sol16">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) Zemin veya üzerinde durulan yerin dengesiz olması</strong></p>
+            <p>Yönetmeliğe göre riskler kategorilere ayrılır: Yükün kendisiyle ilgili, fiziksel güç gereksinimiyle ilgili, çalışma ortamıyla ilgili ve işin gereklilikleriyle ilgili. "Yetersiz ara" ve "Çalışma temposu" organizasyon (işin gereklilikleri) kaynaklıdır. "Aşırı kaldırma" ve "Yükün ani hareketi" işle veya yükün özelliğiyle ilgilidir. Sadece <strong>zeminin durumu</strong> fiziksel mekanı, yani doğrudan <em>çalışma ortamının özelliğini</em> tanımlar.</p>
+        </div>
+    </div>
+
+    <!-- Soru 17 -->
+    <div class="question-box" id="q17">
+        <div class="question-text">S.17. Yukarıdakilerden hangisi/hangileri Ekranlı Araçlarla Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik’e göre, işverenin, işyerinde gerçekleştireceği risk değerlendirmesinde; çalışma merkezlerinde ekranlı araçların kullanımından kaynaklanabilecek olumsuz etkilerin ortadan kaldırılması veya en aza indirilmesi için her türlü sağlık ve güvenlik önlemi alacağı risklerdendir?<br><br>
+        I. Görme<br>
+        II. Fizyolojik sorunlar<br>
+        III. Mental stresler</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">A) Yalnız I</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">B) I ve II</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">C) I ve III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">D) II ve III</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol17', 'q17')">E) I, II ve III</li>
+        </ul>
+        <div class="solution" id="sol17">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) I, II ve III</strong></p>
+            <p>Ekranlı Araçlar Yönetmeliği çerçevesinde işveren; monitörden kaynaklanan görme (göz yorgunluğu), oturuştan kaynaklanan fiziksel ve ergonomik zorlanmalar (fizyolojik) ile sistem kilitlenmeleri ve yazılım anlaşmazlıklarından doğan mental stres risklerine karşı risk analizi yapıp önlem almakla yükümlüdür.</p>
+        </div>
+    </div>
+
+    <!-- Soru 18 -->
+    <div class="question-box" id="q18">
+        <div class="question-text">S.18. Ekranlı Araçlarla Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik’e göre aşağıdakilerden hangisi çalışma ortamı ile ilgili bir fiziksel risk etmeni değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol18', 'q18')">A) Mobbing</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">B) Ultraviyole ışını</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">C) Basınç</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">D) Gürültü</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">E) Nem</li>
+        </ul>
+        <div class="solution" id="sol18">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) Mobbing</strong></p>
+            <p>Fiziksel risk etmenleri işyerinin çevre şartlarıyla alakalı olan; ışınım, ısı, nem (termal konfor), basınç ve gürültü gibi öğeleri ifade eder. <strong>Mobbing</strong>, çalışma ortamının sosyal dokusunu bozan <em>psikososyal</em> bir risk etmenidir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 19 -->
+    <div class="question-box" id="q19">
+        <div class="question-text">S.19. Meslek hastalıklarından korunmada iş sağlığı ve güvenliği uygulama ilkeleri ve amaçlarıyla ilgili aşağıdaki ifadelerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">A) İşe giriş muayenesinin amacı uygun işe yerleştirmedir</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">B) Periyodik muayenelerin amacı erken tanıdır</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">C) İşyeri ortamındaki risklerin kontrolü birincil korunma uygulamasıdır</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">D) Sağlık eğitimi, tıbbi korunma yöntemlerinden biridir</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol19', 'q19')">E) Kişisel koruyucu donanım kullanımı, meslek hastalıklarından korunmada öncelikle tercih edilecek yöntemdir</li>
+        </ul>
+        <div class="solution" id="sol19">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Kişisel koruyucu donanım kullanımı, meslek hastalıklarından korunmada öncelikle tercih edilecek yöntemdir</strong></p>
+            <p>İSG'de risklerden korunma hiyerarşisi (sıralaması) vardır. Bu hiyerarşiye göre KKD kullanımı asla "öncelikle" tercih edilmez; daima <strong>en son çare</strong> olarak uygulanır. Öncelikle riski kaynağında yok etme (eliminasyon), yerine daha az zararlısını koyma (ikame) ve mühendislik önlemleri gelir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 20 -->
+    <div class="question-box" id="q20">
+        <div class="question-text">S.20. İnsan-makine sisteminde insan ve makinenin birbirleriyle olan karşılıklı ilişkisi, yukarıdakilerden hangisinde doğru sıra ile verilmiştir?<br><br>
+        I. Eylem - Algılama - Yorumlama - Karar verme<br>
+        II. Karar Verme - Algılama - Yorumlama - Eylem<br>
+        III. Algılama - Yorumlama - Karar verme - Eylem<br>
+        IV. Algılama - Karar verme - Eylem - Yorumlama<br>
+        V. Eylem - Yorumlama - Karar verme - Algılama</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">A) I</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">B) II</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol20', 'q20')">C) III</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">D) IV</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">E) V</li>
+        </ul>
+        <div class="solution" id="sol20">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) III</strong></p>
+            <p>Ergonomide İnsan-Makine Arayüz Modeline göre bilgi işleme süreci sırasıyla ilerler: Duyu organları üzerinden gelen ikazları <strong>Algılama</strong> -> Beyin ile bu gelen veriyi işleme/anlamlandırma <strong>(Yorumlama)</strong> -> Yapılacak olan müdahaleye hükmetme <strong>(Karar Verme)</strong> -> Ve nihayet fiziksel olarak ilgili butona veya araca müdahale etme <strong>(Eylem)</strong>. Bu sıralamayı yansıtan en doğru dizi III numaralı ifadedir.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>hazırlayan Sıraç AKSAN</strong></p>
+    </div>
+</div>
+
+</body>
+</html>

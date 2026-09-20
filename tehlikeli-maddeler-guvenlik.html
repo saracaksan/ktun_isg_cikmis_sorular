@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tehlikeli Maddelerle Çalışmalarda Güvenlik | Çözümlü Sorular</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-bg: #d4edda;
+            --success-border: #c3e6cb;
+            --success-text: #155724;
+            --error-bg: #f8d7da;
+            --error-border: #f5c6cb;
+            --error-text: #721c24;
+            --bg-color: #f4f7f6;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg-color); 
+            color: #333; 
+            line-height: 1.6; 
+            padding: 20px; 
+            margin: 0;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08); 
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .home-link {
+            text-decoration: none;
+            color: #fff;
+            background-color: var(--secondary-color);
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .home-link:hover { background-color: #2980b9; }
+        .header-titles { text-align: right; }
+        h1 { color: var(--primary-color); margin: 0; font-size: 1.5em; }
+        h1 small { display: block; font-size: 0.65em; color: #7f8c8d; margin-top: 5px; font-weight: normal; }
+        
+        .question-box { 
+            margin-bottom: 40px; 
+            padding: 25px; 
+            border: 1px solid #eaeaea; 
+            border-radius: 10px; 
+            background-color: #fafbfc; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03); 
+        }
+        .question-text { 
+            font-weight: 600; 
+            font-size: 1.1em; 
+            margin-bottom: 20px; 
+        }
+        .options { list-style-type: none; padding: 0; margin: 0; }
+        .option { 
+            margin: 10px 0; 
+            padding: 12px 15px; 
+            border: 2px solid #e0e0e0; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            background-color: #fff; 
+            font-size: 1.05em; 
+        }
+        .option:hover { background-color: #f1f1f1; border-color: #ccc; }
+        
+        .option.correct { 
+            background-color: var(--success-bg) !important; 
+            border-color: var(--success-border) !important; 
+            color: var(--success-text) !important; 
+            font-weight: bold; 
+        }
+        .option.wrong { 
+            background-color: var(--error-bg) !important; 
+            border-color: var(--error-border) !important; 
+            color: var(--error-text) !important; 
+            text-decoration: line-through; 
+        }
+        .disabled { pointer-events: none; }
+        
+        .solution { 
+            display: none; 
+            margin-top: 20px; 
+            padding: 20px; 
+            background-color: #eaf4fb; 
+            border-left: 6px solid var(--secondary-color); 
+            border-radius: 6px; 
+            animation: fadeIn 0.5s; 
+        }
+        .solution h4 { margin-top: 0; margin-bottom: 12px; color: #2980b9; font-size: 1.15em; }
+        .solution p { margin: 0 0 10px 0; }
+        .solution p:last-child { margin-bottom: 0; }
+        
+        .footer { 
+            text-align: center; 
+            margin-top: 50px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            font-size: 1.1em; 
+            color: #7f8c8d; 
+        }
+        .footer strong { color: var(--primary-color); }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(-5px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-top">
+        <!-- İstenen index.html aynı dosya konumu linki -->
+        <a href="index.html" class="home-link">🏠 Ana Sayfa</a>
+        <div class="header-titles">
+            <h1>TEHLİKELİ MADDELERLE ÇALIŞMALARDA GÜVENLİK<br><small>2025-2026 BAHAR BÜTÜNLEME – A</small></h1>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(btn, isCorrect, solutionId, questionId) {
+            const options = document.querySelectorAll('#' + questionId + ' .option');
+            
+            // Bütün seçenekleri inaktif et, doğru olanı yeşil yap
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                if (opt.dataset.correct === 'true') {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            // Eğer yanlış seçeneğe tıklandıysa kırmızı ve çizili yap
+            if (!isCorrect) {
+                btn.classList.add('wrong');
+            }
+            
+            // Çözüm alanını göster
+            const solDiv = document.getElementById(solutionId);
+            solDiv.style.display = 'block';
+        }
+    </script>
+
+    <!-- Soru 1 -->
+    <div class="question-box" id="q1">
+        <div class="question-text">S1- Kimyasal maddelere maruziyetin tespiti amaçlı iş hijyeni ölçüm, test veya analiz sonuçlarının değerlendirilmesinde 8 saatlik belirlenen referans süre için ölçülen veya hesaplanan zaman ağırlıklı ortalama değer aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">A) STEL</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol1', 'q1')">B) TWA</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">C) MAK</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">D) CAS</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol1', 'q1')">E) ISO</li>
+        </ul>
+        <div class="solution" id="sol1">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) TWA</strong></p>
+            <p><strong>TWA (Time Weighted Average):</strong> 8 saatlik günlük veya 40 saatlik haftalık çalışma süresi için belirlenmiş "Zaman Ağırlıklı Ortalama" değerdir. Çalışanların bu değere maruz kalması durumunda sağlıklarının olumsuz etkilenmeyeceği kabul edilir. <em>STEL</em> ise 15 dakikalık kısa süreli maruziyet sınırını ifade eder.</p>
+        </div>
+    </div>
+
+    <!-- Soru 2 -->
+    <div class="question-box" id="q2">
+        <div class="question-text">S2- Kimyasal maddeler yan yana geldiklerinde ve birbirleriyle etkileştiklerinde farklı şekillerde tepki gösterebilmektedir. Farklı yollarla aynı/yakın zamanda vücuda alınan bir kimyasal maddenin etkisinin diğer kimyasal madde ile birlikte aynı yönde ve aynı şekilde etki etmesine ne ad verilir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">A) Bağımsız etki</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol2', 'q2')">B) Sinerjik etki</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">C) İnert etki</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">D) Antagonizma</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol2', 'q2')">E) Katalizör etkisi</li>
+        </ul>
+        <div class="solution" id="sol2">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) Sinerjik etki</strong></p>
+            <p>Birden fazla kimyasal maddenin aynı anda organizmaya girmesi durumunda, maddeler aynı organda aynı yönde etki gösteriyorsa bu durum birbirlerinin etkisini artırır. Buna <strong>Sinerjik Etki</strong> (Aditif/Toplam veya Potansiyalizasyon/Katlanarak etki) denir. <em>Antagonizma</em> ise maddelerin birbirinin etkisini zayıflatması durumudur.</p>
+        </div>
+    </div>
+
+    <!-- Soru 3 -->
+    <div class="question-box" id="q3">
+        <div class="question-text">S3- Kimyasal maddeler kimyasal yapılarına göre organik ve anorganik maddeler olarak iki ana sınıfa ayrılmaktadır. Buna göre ahşap, dizel, seramiğin ait olduğu gruplar aşağıdakilerden hangisinde doğru şekilde sınıflandırılmıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">A) Ahşap: Anorganik, Dizel: Anorganik, Seramik: Anorganik</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">B) Ahşap: Anorganik, Dizel: Organik, Seramik: Organik</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol3', 'q3')">C) Ahşap: Organik, Dizel: Organik, Seramik: Anorganik</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">D) Ahşap: Organik, Dizel: Anorganik, Seramik: Organik</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol3', 'q3')">E) Ahşap: Organik, Dizel: Organik, Seramik: Organik</li>
+        </ul>
+        <div class="solution" id="sol3">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: C) Ahşap: Organik, Dizel: Organik, Seramik: Anorganik</strong></p>
+            <p>Organik kimyasallar karbon (C) atomu bazlı olan (canlı dokular, petrol türevleri) kimyasallardır. <strong>Ahşap</strong> (bitkisel/karbon temelli) ve <strong>Dizel</strong> (hidrokarbon/petrol türevi) organik sınıftadır. <strong>Seramik</strong> ise kil, toprak ve mineral bazlı olduğu için karbon iskeletine sahip değildir, <em>anorganik (inorganik)</em> grupta yer alır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 4 -->
+    <div class="question-box" id="q4">
+        <div class="question-text">S4- Aşağıdaki element/bileşiklerden hangisi canlılar için büyük tehlike oluşturan toksik etki gösteren ağır metaller arasında yer almaktadır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">A) Helyum (He)</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">B) Su (H2O)</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">C) Azot (N2)</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol4', 'q4')">D) Oksijen (O2)</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol4', 'q4')">E) Cıva (Hg)</li>
+        </ul>
+        <div class="solution" id="sol4">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Cıva (Hg)</strong></p>
+            <p>Ağır metaller yoğunlukları yüksek olan ve düşük konsantrasyonlarda bile insanlar ve çevre için ciddi toksik etki yaratan elementlerdir. Kurşun (Pb), Kadmiyum (Cd) ve sıvı bir metal olan <strong>Cıva (Hg)</strong> en bilinen zehirli ağır metallerdir. Helyum, Azot, Oksijen gaz formunda ametaller veya soygazlardır; Su ise bir bileşiktir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 5 -->
+    <div class="question-box" id="q5">
+        <div class="question-text">S5- Kimyasal maddeler etkilerini gösterebilmeleri için herhangi bir yolla vücuda alınması gerekmektedir. Solunduğunda, ağız yoluyla alındığında, deriye nüfuz ettiğinde kansere yol açabilen veya bu etkinin oluşumunu hızlandıran madde ve müstahzarlar aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">A) Alerjik madde</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">B) Yükseltgen madde</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">C) Mutajen madde</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol5', 'q5')">D) Kanserojen madde</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol5', 'q5')">E) İndirgen madde</li>
+        </ul>
+        <div class="solution" id="sol5">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Kanserojen madde</strong></p>
+            <p>Sorudaki tanım kimyasal risklerin sınıflandırılmasındaki direkt "Kanserojen Madde" tanımıdır. <em>Mutajen madde</em>, genetik (DNA) yapıda hasara veya kalıtsal değişikliğe yol açan maddedir. Kansere sebep olan, tümör oluşturan veya hızlandıran maddeler <strong>Kanserojen</strong> olarak adlandırılır (Örn: Asbest, Benzen).</p>
+        </div>
+    </div>
+
+    <!-- Soru 6 -->
+    <div class="question-box" id="q6">
+        <div class="question-text">S6- Kimyasal maddelerin adlandırmalarında birlikteliği sağlamak ve ortaya çıkabilecek aksaklıkların önlenmesi için belirli bir kurala göre yapılması gerekmektedir. Kimyasal maddelerin adlandırmaları aşağıdaki hangi uluslararası kuruluşun önerileri/tavsiyeleri doğrultusunda yapılmaktadır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">A) WHO</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol6', 'q6')">B) IUPAC</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">C) CAS</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">D) ILO</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol6', 'q6')">E) ISO</li>
+        </ul>
+        <div class="solution" id="sol6">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) IUPAC</strong></p>
+            <p><strong>IUPAC</strong> (Uluslararası Temel ve Uygulamalı Kimya Birliği - International Union of Pure and Applied Chemistry), tüm dünyada kimyasal bileşiklerin bilimsel ve sistematik bir şekilde adlandırılmasını sağlayan (nomenklatür) yetkili otoritedir. <em>CAS</em> numarası her kimyasala verilen özgün bir numara sistemidir, bir adlandırma kuruluşu değildir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 7 -->
+    <div class="question-box" id="q7">
+        <div class="question-text">S7- Malzeme güvenlik bilgi formu kimyasal madde hakkında bazı bilgileri içeren bilgi formudur. Bu formda kimyasal madde ile ilgili aşağıdaki bilgilerden hangisi bulunmak zorunda değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">A) İlk yardım önlemleri</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">B) Taşıma/nakliye önlemleri</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">C) Yangınla mücadele önlemleri</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol7', 'q7')">D) Kimyasalın üretim yöntemi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol7', 'q7')">E) Fiziksel ve kimyasal özellikleri</li>
+        </ul>
+        <div class="solution" id="sol7">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Kimyasalın üretim yöntemi</strong></p>
+            <p>Güvenlik Bilgi Formları (MSDS/SDS) uluslararası standartlara göre 16 alt başlık içerir (Bileşimi, İlkyardım, Yangın, Elleçleme, Fiziksel özellikler, Toksikoloji vb.). Ancak bir kimyasalın fabrikada <strong>nasıl üretildiği (üretim yöntemi veya gizli reçetesi)</strong> ticari sırdır ve güvenlik formlarında yer alması istenmez.</p>
+        </div>
+    </div>
+
+    <!-- Soru 8 -->
+    <div class="question-box" id="q8">
+        <div class="question-text">S8- Solunum yolu dışında organizmaya girerek canlıda etki gösteren katı veya sıvı haldeki kimyasal maddenin belli koşullarda bir defada verildiğinde verildiği gruptaki hayvanların %50 sini öldüren mg/kg birimindeki doz aşağıdaki simgelerden hangisiyle ifade edilir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol8', 'q8')">A) LD50</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">B) LC50</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">C) DL50</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">D) DD50</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol8', 'q8')">E) DC50</li>
+        </ul>
+        <div class="solution" id="sol8">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) LD50</strong></p>
+            <p><strong>LD50 (Lethal Dose 50):</strong> Deri, sindirim veya enjeksiyon (solunum yolu hariç) yoluyla vücuda alınan katı veya sıvı kimyasallar için "Öldürücü Doz" (Dose) anlamına gelir. Ortama yayılan gaz veya buharlar (solunum yolu) için ise <em>LC50 (Lethal Concentration 50 - Öldürücü Konsantrasyon)</em> kavramı kullanılır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 9 -->
+    <div class="question-box" id="q9">
+        <div class="question-text">S9- Kimyasal Maddelerle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik’e göre, aşağıdakilerden hangisi kimyasal maddelerle çalışmalarda yapılacak risk değerlendirmelerinde dikkat edilecek hususlardan biri değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">A) Kimyasal maddelerin sağlık ve güvenlik yönünden tehlike ve zararları</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol9', 'q9')">B) İmalatçı, ithalatçı ve satıcı firmanın kapasiteleri</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">C) Kimyasal madde maruziyetin türü, düzeyi ve süresi</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">D) Kimyasal maddenin imalatçı/ ithalatçıdan alınacak MSDS formu</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol9', 'q9')">E) Birden fazla kimyasal madde ile çalışılan yerlerde bu maddelerin her biri ve birbirleriyle etkileşimleri</li>
+        </ul>
+        <div class="solution" id="sol9">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) İmalatçı, ithalatçı ve satıcı firmanın kapasiteleri</strong></p>
+            <p>İş Sağlığı ve Güvenliğinde risk değerlendirmesi tehlikenin doğasına, maruziyete ve riskin nasıl yönetileceğine odaklanır. Kimyasalın üretildiği veya satıldığı fabrikanın (firmanın) ticari veya fiziksel "üretim kapasitesi", çalışanların maruz kalacağı İSG riski üzerinde değerlendirilen bir parametre değildir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 10 -->
+    <div class="question-box" id="q10">
+        <div class="question-text">S10- Kimyasal Maddelerle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik’e göre, havadaki kurşun ve iyonik kurşun bileşikleri için bağlayıcı biyolojik sınır 100 mL kan numunesi içinde kaç µg Pb’dir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">A) 7 µg</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">B) 10 µg</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">C) 30 µg</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol10', 'q10')">D) 50 µg</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol10', 'q10')">E) 70 µg</li>
+        </ul>
+        <div class="solution" id="sol10">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) 70 µg</strong></p>
+            <p>İlgili yönetmeliğin ekinde (Ek-II) doğrudan yer alan bilgiye göre; Kurşun ve iyonik kurşun bileşikleri için bağlayıcı biyolojik sınır değer: <strong>70 µg Pb/100 ml kan</strong> olarak tespit edilmiştir. Bu sınırın aşıldığı durumlarda derhal koruyucu ve tıbbi önlemler alınması gerekir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 11 -->
+    <div class="question-box" id="q11">
+        <div class="question-text">S11- Kimyasal Maddelerle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik’e göre, aşağıdakilerden hangisi tehlikeli kimyasal maddelerle çalışırken alınması gereken önlemlerden biri değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">A) İşyerinde uygun düzenleme ve iş organizasyonu yapılır</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">B) İşyeri bina ve eklentilerine uygun havalandırma sağlanır</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">C) İşyerinde üretime uygun sıcaklık kontrolü yapılır</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol11', 'q11')">D) Kimyasal madde ile çalışma en az sayıda çalışan ile yapılır</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol11', 'q11')">E) İşletmede son kullanma tarihi geçen kimyasal maddeler aynı kapta toplanır</li>
+        </ul>
+        <div class="solution" id="sol11">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) İşletmede son kullanma tarihi geçen kimyasal maddeler aynı kapta toplanır</strong></p>
+            <p>Farklı nitelikteki kimyasalların (asitler-bazlar, oksitleyiciler-yanıcılar) aynı kapta toplanması şiddetli reaksiyonlara (patlama, zehirli gaz çıkışı, yangın) sebep olur. Bu nedenle kimyasallar (miadı dolsa bile) kesinlikle birbiriyle karıştırılmaz; birbirlerinden ayrı ve etiketli atık kaplarında bertarafa gönderilir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 12 -->
+    <div class="question-box" id="q12">
+        <div class="question-text">S12- Maruz kalındığında havadaki %0.0001 değerinin üzerindeki konsantrasyonlarda bir süre sonra koku alma sinirleri felce uğratan ve koku alamaz hale getiren kimyasal boğucu etki gösteren madde aşağıdakilerden hangisidir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">A) Kükürtdioksit (SO2)</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">B) Azot (N2)</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">C) Kükürt trioksit (SO3)</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol12', 'q12')">D) Hidrojen sülfür (H2S)</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol12', 'q12')">E) Oksijen (O2)</li>
+        </ul>
+        <div class="solution" id="sol12">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) Hidrojen sülfür (H2S)</strong></p>
+            <p>Kanalizasyon, arıtma tesisleri ve petrokimya tesislerinde sıkça karşılaşılan <strong>Hidrojen sülfür (H2S)</strong>, düşük yoğunluklarda çürük yumurta kokusu verir. Ancak sinsi bir gazdır; konsantrasyonu arttığında ya da uzun süre maruz kalındığında koku sinirlerini felç (anestezi) eder. Koku kesildiği için tehlikenin geçtiği sanılır ve ani kimyasal boğulma/ölüm gerçekleşir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 13 -->
+    <div class="question-box" id="q13">
+        <div class="question-text">S13- Bazı gazlar ortamda çok yoğun bulunmaları durumunda havadaki oksijenin yerini alarak oksijenin daha az solunmasına sebep olduklarından oksijen yetersizliği sebebi ile boğulmalara sebep olabilirler. Buna göre aşağıdaki gazlardan hangisi bu sınıfta yer almaz?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">A) Metan</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">B) Etan</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">C) Karbondioksit</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol13', 'q13')">D) Hidrojen</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol13', 'q13')">E) Hidrojen sülfür (H2S)</li>
+        </ul>
+        <div class="solution" id="sol13">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Hidrojen sülfür (H2S)</strong></p>
+            <p>Gazlar boğucu etkilerine göre "Basit boğucular" ve "Kimyasal boğucular" olarak ikiye ayrılır. Oksijenin yerini fiziksel olarak alıp havasız bırakan gazlar (Metan, Etan, Karbondioksit, Azot, Hidrojen vb.) <strong>basit boğucu</strong>dur. Ancak Karbonmonoksit, <strong>Hidrojen sülfür (H2S)</strong> ve Hidrojen siyanür (HCN) direkt olarak kanın oksijen taşımasını veya hücre içi solunumu engelleyerek zehirleyen <strong>kimyasal boğucu</strong> gazlardır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 14 -->
+    <div class="question-box" id="q14">
+        <div class="question-text">S14- Aşağıdakilerden hangisi metan gazının hava ile yanma reaksiyonu sonucunda oluşan ürünlerden birisi değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol14', 'q14')">A) NaCl</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">B) CO</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">C) CO2</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">D) H2O</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol14', 'q14')">E) NxOy</li>
+        </ul>
+        <div class="solution" id="sol14">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) NaCl</strong></p>
+            <p>Metan (CH4) bir hidrokarbondur. Hava (O2 ve N2) ile yandığında tam yanma ile Karbondioksit (CO2) ve Su (H2O), eksik yanma ile Karbonmonoksit (CO) ve çok yüksek sıcaklıklarda havadaki azot sebebiyle Azot Oksitleri (NxOy) oluşabilir. <strong>Sodyum klorür (NaCl - Sofra tuzu)</strong> organik bir yanma reaksiyonu ürünü değildir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 15 -->
+    <div class="question-box" id="q15">
+        <div class="question-text">S15- Asbestle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik’e göre işveren, asbest veya asbestli malzeme tozuna maruziyet riski bulunan çalışmalarda bazı önlemlerin alınması gerekmektedir. Asbest olduğu belirlenen çalışma alanlarında alınacak önlemlerle ilgili aşağıdaki ifadelerden hangisi yanlıştır?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">A) Gerekli işaretlemeler yapılır ve uyarı levhaları konulur.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">B) Görevli olanlar dışındaki çalışanların girmesi önlenir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">C) Sigara içilmesi yasak olan alanlar belirlenir.</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol15', 'q15')">D) Yeme içme için ayrılan yerler, asbest tozu ile kirlenme riski bulunan yerlerin dışında seçilir.</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol15', 'q15')">E) Kantin ve yemekhaneler işletmenin merkezinde herkesin kolay ulaşabileceği yerde bulundurulur.</li>
+        </ul>
+        <div class="solution" id="sol15">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Kantin ve yemekhaneler işletmenin merkezinde herkesin kolay ulaşabileceği yerde bulundurulur.</strong></p>
+            <p>Asbest birinci derece kanserojen ve çok tehlikeli bir tozdur. Asbest söküm veya çalışması yapılan tesislerde "kirlilik ve çapraz bulaşma riski" üst düzeydedir. Kantin ve yemekhaneler asla asbest tehlikesi olabilen ortak/merkezi alanlarda kurulamayacağı gibi, tamamen izole edilmiş, asbestten arınmış özel temiz bölgelerde konumlandırılmalıdır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 16 -->
+    <div class="question-box" id="q16">
+        <div class="question-text">S16- Asbestle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik’e göre işveren Yönetmelik kapsamındaki çalışmalarda çalışanların maruz kaldığı havadaki asbest konsantrasyonunun, sekiz saatlik zaman ağırlıklı ortalama değerinin aşağıdakilerden hangisini geçmemesini sağlar?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">A) 10 lif/cm3</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">B) 1 lif/cm3</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">C) 5 lif/cm3</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol16', 'q16')">D) 0,1 lif/cm3</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol16', 'q16')">E) 50 lif/cm3</li>
+        </ul>
+        <div class="solution" id="sol16">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: D) 0,1 lif/cm3</strong></p>
+            <p>Asbest lifleri için mevzuatımızda (AB normlarıyla uyumlu olarak) belirlenmiş olan mesleki maruziyet sınır değeri (TWA), havadaki 1 santimetreküp (cm3) hacimde en fazla <strong>0,1 lif</strong> (0,1 lif/cm3) şeklindedir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 17 -->
+    <div class="question-box" id="q17">
+        <div class="question-text">S17- Kanserojen veya Mutajen Maddelerle Çalışmalarda Sağlık ve Güvenlik Önlemleri Hakkında Yönetmelik’e göre kayıtların tutulması ve saklanması yasal bir zorunluluktur. İlgili yönetmeliğe göre kayıtlar maruziyetin sona ermesinden sonra en az kaç yıl süre ile saklanması gerekmektedir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">A) 1 yıl</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">B) 10 yıl</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">C) 20 yıl</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol17', 'q17')">D) 50 yıl</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol17', 'q17')">E) 40 yıl</li>
+        </ul>
+        <div class="solution" id="sol17">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) 40 yıl</strong></p>
+            <p>Kanserojen (kanser yapan) ve mutajen (DNA'yı bozan) maddelerin kuluçka (latent) süreleri 15, 20 veya 30 yıl sonrasını bulabilmektedir. Hasta veya ailesinin geriye dönük hak arayabilmesi ve epidemiyolojik takip yapılabilmesi için maruziyet kayıtları kişinin o işteki çalışması (maruziyeti) bittikten sonra <strong>en az 40 yıl</strong> süreyle saklanmak zorundadır.</p>
+        </div>
+    </div>
+
+    <!-- Soru 18 -->
+    <div class="question-box" id="q18">
+        <div class="question-text">S18- Aşağıdakilerden hangisi iş hijyeni ölçüm, test veya analiz sonuçlarının değerlendirilmesine yönelik laboratuvarlarda uyulması gereken kurallardan biri değildir?</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">A) Enstrümantal analiz cihazlarıyla çalışılıyorsa, her bir cihaz için en az 5 metrekarelik bir alan bulunmalı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">B) Tartım işleminin yapıldığı laboratuvarda tartım odası, sonuçların çevre şartlarından olumsuz şekilde etkilenmesini engelleyecek şekilde en az 5 metrekare olmalı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">C) Numunelerin teslim alındığı numune kabul bölümü analiz yapan laboratuvarlar için en az 5 metrekare olmalı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol18', 'q18')">D) Kimyasal maddeler varsa bunların depolanması için en az 6 metrekarelik ayrı bir oda bulunmalı</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol18', 'q18')">E) Boş ve dolu tüplerin tamamı aynı yerde ve aynı depoda muhafaza edilmeli</li>
+        </ul>
+        <div class="solution" id="sol18">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: E) Boş ve dolu tüplerin tamamı aynı yerde ve aynı depoda muhafaza edilmeli</strong></p>
+            <p>Laboratuvar güvenliği temel prensiplerine göre dolu basınçlı gaz tüpleri ile boş tüplerin, ve farklı kimyasal özelliklere sahip (yanıcı/oksitleyici) tüplerin birbirleriyle karıştırılmaması gerekir. Dolu ve boş tüpler yanlış anlaşılmaları, devrilmeleri ve olası tepkimeleri engellemek adına <strong>mutlaka ayrı alanlarda</strong> depolanmalı ve işaretlenmelidir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 19 -->
+    <div class="question-box" id="q19">
+        <div class="question-text">S19- Birincil ve ikincil ambalaj maddelerinin üzerlerinde içerisindeki kimyasal madde hakkında bilgi içeren etiketlerin bulunması ve kabın hacmine göre etiketin belli boyutlarda olması zorunluluktur. Buna göre ambalaj kapasitesi 500 L’den daha fazla olan maddeleri etiketlemede kullanılan etiket boyutları ile ilgili aşağıdakilerden hangisi doğrudur?</div>
+        <ul class="options">
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol19', 'q19')">A) En az 148x410 mm olmalı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">B) En fazla 2x4 mm olmalı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">C) Kabın tamamını kaplayacak şekilde olmalı</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">D) Herhangi bir sınır bulunmamaktadır</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol19', 'q19')">E) 1x1cm olmalı</li>
+        </ul>
+        <div class="solution" id="sol19">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: A) En az 148x410 mm olmalı</strong></p>
+            <p><em>Not:</em> Uluslararası SEA / CLP mevzuat tablolarında 500 litreden büyük ambalajlar için minimum ebat "148 x 210 mm (A5 boyutları)" olarak belirtilir. Ancak sınav kağıdında veya kaynak matbu belgede dizgi hatası veya özel bir mevzuat detayı olarak "148x410 mm" formatında A şıkkı doğru kabul edilmiştir. Şıklardaki diğer değerler (1x1 cm, kabın tamamı vb.) etiketleme standartları için irrasyoneldir.</p>
+        </div>
+    </div>
+
+    <!-- Soru 20 -->
+    <div class="question-box" id="q20">
+        <div class="question-text">S20- Kimyasal maddelerin MGBF’larında yer alan kod serileri belirli alandaki zarar veya önlemleri ifade eder. Kimyasal maddeler için kullanılan genel amaçlı önlem ifadeleri ve kod serisi aşağıdakilerden hangisidir.</div>
+        <ul class="options">
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">A) H 100</li>
+            <li class="option" data-correct="true" onclick="checkAnswer(this, true, 'sol20', 'q20')">B) P 100</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">C) H 300</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">D) P 500</li>
+            <li class="option" data-correct="false" onclick="checkAnswer(this, false, 'sol20', 'q20')">E) H 200</li>
+        </ul>
+        <div class="solution" id="sol20">
+            <h4>Çözüm ve Konu Anlatımı</h4>
+            <p><strong>Doğru Cevap: B) P 100</strong></p>
+            <p>Malzeme Güvenlik Bilgi Formları (MGBF) sisteminde:<br>
+            - <strong>H (Hazard/Zarar) Serisi:</strong> H200 (Fiziksel), H300 (Sağlık), H400 (Çevresel).<br>
+            - <strong>P (Precautionary/Önlem) Serisi:</strong> P100 (Genel Önlemler), P200 (Tedbir), P300 (Müdahale), P400 (Depolama), P500 (Bertaraf) şeklindedir.<br>
+            Soruda "Genel amaçlı önlem" istendiği için doğru kod <strong>P100</strong> serisidir.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>hazırlayan Sıraç AKSAN</strong></p>
+    </div>
+</div>
+
+</body>
+</html>
